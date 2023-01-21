@@ -1,4 +1,8 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
+
+const path = require("path");
+const resove = dir => path.join(__dirname, dir);
+
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
@@ -10,5 +14,6 @@ module.exports = defineConfig({
     headers: {
       'Access-Control-Allow-Origin': '*',
     }
-  }
+  },
+  chainWebpack: config => config.resolve.alias.set("@", resove("src"))
 })

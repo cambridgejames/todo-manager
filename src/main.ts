@@ -8,7 +8,7 @@ import DevUI from "vue-devui";
 import "vue-devui/style.css";
 import "@devui-design/icons/icomoon/devui-icon.css";
 import { ThemeService, ThemeServiceInit } from "devui-theme";
-import { toolManagerLightTheme, toolManagerDarkTheme } from "./assets/ts/theme/ToolManagerTheme";
+import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
 
 // 自定义全局样式
 import "./assets/css/index.css";
