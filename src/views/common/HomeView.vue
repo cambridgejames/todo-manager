@@ -1,6 +1,10 @@
 <template>
-  <div id="home-box" class="home-box"></div>
+  <div id="home-box" class="home-box">
+    home
+  </div>
 </template>
+
+<script lang="ts" setup></script>
 
 <style lang="scss">
 .home-box {
