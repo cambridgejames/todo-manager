@@ -6,5 +6,6 @@ import { defaultThemeData } from "./ToolManagerDefaultTheme";
 export const themeData = {
   ...defaultThemeData,
   "devui-global-bg": "#2b2d30",
-  "devui-global-bg-normal": "#1e1f22"
+  "devui-global-bg-normal": "#1e1f22",
+  "devui-icon-fill": "#e8e8e8"
 };

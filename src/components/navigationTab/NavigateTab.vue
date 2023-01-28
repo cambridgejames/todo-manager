@@ -1,16 +1,18 @@
 <template>
   <div id="navigate-tab-box" class="navigate-tab-box">
     <div class="button-group-top">
-      <button v-for="(item, index) in topViewBtn" :key="index"
-              :class="['button-group-btn', { 'selected': item.enable }]">
-        <d-icon :name="item.icon" :size="iconSize" @click="gotoPath(item.url)"></d-icon>
-      </button>
+      <div v-for="(item, index) in topViewBtn" :key="index" class="button-group-div">
+        <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
+          <d-icon :name="item.icon" :size="iconSize"/>
+        </button>
+      </div>
     </div>
     <div class="button-group-bottom">
-      <button v-for="(item, index) in bottomViewBtn" :key="index"
-              :class="['button-group-btn', { 'selected': item.enable }]">
-        <d-icon :name="item.icon" :size="iconSize" @click="gotoPath(item.url)"></d-icon>
-      </button>
+      <div v-for="(item, index) in bottomViewBtn" :key="index" class="button-group-div">
+        <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
+          <d-icon :name="item.icon" :size="iconSize"/>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -84,6 +86,10 @@ onMounted(() => {
 <style scoped lang="scss">
 @use "~@/assets/css/constants";
 
+$button-group-btn-padding: 6px;
+$button-group-btn-radius: 8px;
+$button-group-btn-inner-padding: 8px;
+
 .navigate-tab-box {
   width: constants.$main-asside-width;
   height: 100%;
@@ -96,20 +102,23 @@ onMounted(() => {
     overflow: hidden;
     cursor: pointer;
 
-    .button-group-btn {
+    .button-group-div {
       width: 100%;
       height: constants.$main-asside-width;
       position: relative;
 
-      &[class*="selected"]:before {
-        content: " ";
-        width: calc(constants.$main-asside-width - 20px);
-        height: calc(constants.$main-asside-width - 20px);
+      .button-group-btn {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        border-radius: 5px;
-        background-color: red;
+        top: $button-group-btn-padding;
+        left: $button-group-btn-padding;
+        width: calc(constants.$main-asside-width - 2 * $button-group-btn-padding);
+        height: calc(constants.$main-asside-width - 2 * $button-group-btn-padding);
+        border-radius: $button-group-btn-radius;
+        padding: $button-group-btn-inner-padding;
+
+        &[class*="selected"] {
+          background-color: var(--devui-primary);
+        }
       }
     }
   }
