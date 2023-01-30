@@ -100,7 +100,6 @@ $button-group-btn-inner-padding: 8px;
   %btn-group {
     width: 100%;
     overflow: hidden;
-    cursor: pointer;
 
     .button-group-div {
       width: 100%;
@@ -129,6 +128,7 @@ $button-group-btn-inner-padding: 8px;
   }
 
   .button-group-bottom {
+    flex-shrink: 0;
     height: max-content;
     @extend %btn-group;
   }

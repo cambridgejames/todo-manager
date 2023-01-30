@@ -1,5 +1,5 @@
 import { NavigateTabItem } from "./NavigateTabItem";
-import { useRouter, Router } from "vue-router";
+import { Router } from "vue-router";
 
 export interface NavigateTabItemEx extends NavigateTabItem {
   enable: boolean
