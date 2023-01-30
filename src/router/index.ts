@@ -1,4 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { allBtnList } from "@/assets/ts/config/Navigate";
+
+/**
+ * 将导航配置转换成router配置
+ *
+ * @returns router配置
+ */
+const buildNavigationRouter = (): Array<RouteRecordRaw> => {
+  const solution = [] as Array<RouteRecordRaw>;
+  for (const btnItem of allBtnList) {
+    solution.push({ path: btnItem.url, name: btnItem.name, component: btnItem.component } as RouteRecordRaw);
+  }
+  return solution;
+};
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -6,21 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     component: () => import("@/views/NavigationFrame.vue"),
     children: [
-      {
-        path: "/",
-        name: "home",
-        component: () => import("@/views/common/HomeView.vue")
-      },
-      {
-        path: "/user",
-        name: "user",
-        component: () => import("@/views/common/UserView.vue")
-      },
-      {
-        path: "/settings",
-        name: "settings",
-        component: () => import("@/views/common/SettingsView.vue")
-      }
+      ...buildNavigationRouter()
     ]
   }
 ];
