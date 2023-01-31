@@ -93,6 +93,7 @@ $button-group-btn-inner-padding: 8px;
 .navigate-tab-box {
   width: constants.$main-asside-width;
   height: 100%;
+  padding: var(--tm-nav-tab-padding, 6px) 0;
   display: flex;
   flex-direction: column;
   background-color: var(--devui-global-bg);
