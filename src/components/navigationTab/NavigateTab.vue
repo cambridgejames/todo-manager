@@ -84,7 +84,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use "~@/assets/css/constants";
+@use "~@/assets/css/constants.scss";
 
 $button-group-btn-padding: 6px;
 $button-group-btn-radius: 8px;
@@ -95,7 +95,7 @@ $button-group-btn-inner-padding: 8px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--devui-global-bg-normal);
+  background-color: var(--devui-global-bg);
 
   %btn-group {
     width: 100%;
@@ -110,13 +110,29 @@ $button-group-btn-inner-padding: 8px;
         position: absolute;
         top: $button-group-btn-padding;
         left: $button-group-btn-padding;
-        width: calc(constants.$main-asside-width - 2 * $button-group-btn-padding);
-        height: calc(constants.$main-asside-width - 2 * $button-group-btn-padding);
+        width: calc(#{constants.$main-asside-width} - 2 * #{$button-group-btn-padding});
+        height: calc(#{constants.$main-asside-width} - 2 * #{$button-group-btn-padding});
         border-radius: $button-group-btn-radius;
         padding: $button-group-btn-inner-padding;
 
+        .devui-icon__container {
+          color: var(--devui-icon-fill);
+
+          :deep .icon {
+            transition: none !important;
+          }
+        }
+
+        &:hover {
+          background-color: var(--tm-primary-hover);
+        }
+
         &[class*="selected"] {
           background-color: var(--devui-primary);
+
+          .devui-icon__container {
+            color: var(--devui-icon-fill-active);
+          }
         }
       }
     }

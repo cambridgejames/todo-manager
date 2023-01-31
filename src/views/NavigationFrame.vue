@@ -36,12 +36,12 @@ const changeTheme = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use "~@/assets/css/constants";
+@use "~@/assets/css/constants.scss";
 
 .navigation-box {
   width: 100%;
   height: 100%;
-  background-color: var(--devui-global-bg);
+  background-color: var(--devui-global-bg-normal);
 
   .navigation-left-aside {
     width: constants.$main-asside-width;
