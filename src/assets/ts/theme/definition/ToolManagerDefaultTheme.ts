@@ -8,5 +8,7 @@ export const defaultThemeData = {
   "devui-font-size-lg": "14px",
   "devui-animation-duration-slow": "150ms",
   "devui-animation-duration-base": "100ms",
-  "devui-animation-duration-fast": "100ms"
+  "devui-animation-duration-fast": "100ms",
+  "tm-nav-tab-padding": "6px",
+  "tm-article-padding": "10px"
 };
