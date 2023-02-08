@@ -119,7 +119,7 @@ $button-group-btn-inner-padding: 8px;
         .devui-icon__container {
           color: var(--devui-icon-fill);
 
-          :deep .icon {
+          :deep(.icon) {
             transition: none !important;
           }
         }

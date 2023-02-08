@@ -5,7 +5,7 @@
         <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
       </d-aside>
       <d-content class="navigation-main-content">
-        <d-splitter class="splitter-border" orientation="horizontal" splitBarSize="2px">
+<!--        <d-splitter class="splitter-border" orientation="horizontal" splitBarSize="2px">
           <template v-slot:DSplitterPane>
             <d-splitter-pane minSize="400px" class="pane-content">
               <router-view/>
@@ -14,7 +14,8 @@
               <d-button variant="solid" size="md" @click="changeTheme">Solid Button</d-button>
             </d-splitter-pane>
           </template>
-        </d-splitter>
+        </d-splitter>-->
+        <tm-split-panel direction="column"></tm-split-panel>
       </d-content>
     </d-layout>
   </div>
@@ -22,6 +23,7 @@
 
 <script lang="ts" setup>
 import NavigateTab from "@/components/navigationTab/NavigateTab.vue";
+import TmSplitPanel from "@/components/tmSplitPanel/TmSplitPanel.vue";
 
 import { inject } from "vue";
 import { ThemeService } from "devui-theme";
