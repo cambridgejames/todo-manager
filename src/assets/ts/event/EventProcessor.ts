@@ -3,8 +3,8 @@ import { Point } from "@/assets/ts/interface/2d/Point";
 /**
  * 判定鼠标拖拽的移动距离最小值（单位：像素）
  */
-const MOUSE_DRAG_MIN_X = 5;
-const MOUSE_DRAG_MIN_Y = 5;
+const MOUSE_DRAG_MIN_X = 0;
+const MOUSE_DRAG_MIN_Y = 0;
 
 /**
  * 判定鼠标拖拽的间隔时间最小值（单位：毫秒）
