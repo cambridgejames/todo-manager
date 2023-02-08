@@ -4,7 +4,8 @@
     <div ref="firstPanel" :class="['split-panel-slot', 'first', direction === 'row' ? 'row' : 'col']">
       <slot name="first"></slot>
     </div>
-    <div ref="splitBar" class="tm-split-bar" draggable="false" @dragstart.stop @mousedown.left.stop="onDragSplitBar"/>
+    <div ref="splitBar" class="tm-split-bar" draggable="false" @dragstart.stop.prevent
+         @mousedown.left.stop.prevent="onDragSplitBar"/>
     <div ref="secondPanel" :class="['split-panel-slot', 'second', direction === 'row' ? 'row' : 'col']">
       <slot name="second"></slot>
     </div>
@@ -13,6 +14,8 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import { onMouseDown } from "@/assets/ts/event/EventProcessor";
+import { Point } from "@/assets/ts/interface/2d/Point";
 
 const props = defineProps({
   size: {
@@ -35,6 +38,77 @@ const props = defineProps({
 const size = ref(props.size);
 const minSize = ref(props.minSize);
 const direction = ref(props.direction === "row" ? "row" : "column");
+
+const tmSplitPanel = ref<HTMLElement>();
+const firstPanel = ref<HTMLElement>();
+const splitBar = ref<HTMLElement>();
+const secondPanel = ref<HTMLElement>();
+
+/**
+ * 计算第二面板的实际大小
+ *
+ * @param sizeValue 当前大小
+ * @param maxValue 整个split面板的大小
+ * @return {number} 第二面板的实际大小
+ */
+const formatSize = (sizeValue: string, maxValue: number): number => {
+  if (sizeValue.endsWith("px")) {
+    return parseFloat(sizeValue.substring(0, sizeValue.length - 2), 10);
+  } else if (sizeValue.endsWith("%")) {
+    return maxValue * parseFloat(sizeValue.substring(0, sizeValue.length - 1), 10) / 100;
+  }
+  const solution = parseFloat(sizeValue, 10);
+  return isNaN(solution) ? 0 : solution;
+};
+
+/**
+ * 获取面板尺寸设置值的单位
+ *
+ * @param sizeValue 当前大小
+ * @return {string} 单位
+ */
+const getUnit = (sizeValue: string): string => {
+  return sizeValue.endsWith("px") ? "px" : (sizeValue.endsWith("%") ? "%" : "");
+};
+
+/**
+ * 分离面板拖拽事件处理方法
+ *
+ * @param event 鼠标事件
+ */
+const onDragSplitBar = (event: MouseEvent): void => {
+  const tmSplitPanelElement = tmSplitPanel.value;
+  const firstPanelElement = firstPanel.value;
+  const secondPanelElement = secondPanel.value;
+  if (tmSplitPanelElement === undefined || firstPanelElement === undefined || secondPanelElement === undefined) {
+    return;
+  }
+  const onDragFunc = (event: MouseEvent, startPoint: Point): void => {
+    const unit = getUnit(size.value);
+    if (direction.value === "row") {
+      const minSizeNumber = formatSize(minSize.value, tmSplitPanelElement.offsetWidth);
+      const maxSizeNumber = tmSplitPanelElement.offsetWidth - minSizeNumber;
+      const currentSize = formatSize(size.value, tmSplitPanelElement.offsetWidth) - event.clientX + startPoint.x;
+      let solutionSize = Math.max(Math.min(currentSize, maxSizeNumber), minSizeNumber);
+      if (unit === "%") {
+        solutionSize = solutionSize * 100 / tmSplitPanelElement.offsetWidth;
+      }
+      size.value = `${solutionSize}${unit}`;
+      startPoint.x = event.clientX;
+    } else {
+      const minSizeNumber = formatSize(minSize.value, tmSplitPanelElement.offsetHeight);
+      const maxSizeNumber = tmSplitPanelElement.offsetHeight - minSizeNumber;
+      const currentSize = formatSize(size.value, tmSplitPanelElement.offsetHeight) - event.clientY + startPoint.y;
+      let solutionSize = Math.max(Math.min(currentSize, maxSizeNumber), minSizeNumber);
+      if (unit === "%") {
+        solutionSize = solutionSize * 100 / tmSplitPanelElement.offsetHeight;
+      }
+      size.value = `${solutionSize}${unit}`;
+      startPoint.y = event.clientY;
+    }
+  };
+  onMouseDown(event, null, onDragFunc, null, null);
+};
 </script>
 
 <style lang="scss" scoped>

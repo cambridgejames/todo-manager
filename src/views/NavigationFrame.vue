@@ -15,7 +15,7 @@
             </d-splitter-pane>
           </template>
         </d-splitter>-->
-        <tm-split-panel direction="column"></tm-split-panel>
+        <tm-split-panel direction="row"></tm-split-panel>
       </d-content>
     </d-layout>
   </div>
