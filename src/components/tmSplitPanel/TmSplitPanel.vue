@@ -53,11 +53,11 @@ const secondPanel = ref<HTMLElement>();
  */
 const formatSize = (sizeValue: string, maxValue: number): number => {
   if (sizeValue.endsWith("px")) {
-    return parseFloat(sizeValue.substring(0, sizeValue.length - 2), 10);
+    return parseFloat(sizeValue.substring(0, sizeValue.length - 2));
   } else if (sizeValue.endsWith("%")) {
-    return maxValue * parseFloat(sizeValue.substring(0, sizeValue.length - 1), 10) / 100;
+    return maxValue * parseFloat(sizeValue.substring(0, sizeValue.length - 1)) / 100;
   }
-  const solution = parseFloat(sizeValue, 10);
+  const solution = parseFloat(sizeValue);
   return isNaN(solution) ? 0 : solution;
 };
 
