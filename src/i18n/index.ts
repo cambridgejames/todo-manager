@@ -5,8 +5,10 @@ import zhLocale from "@/i18n/zh-cn/index";
 const messages = {
   zh: zhLocale,
   cn: zhLocale,
+  "zh-cn": zhLocale,
   en: enLocale,
-  us: enLocale
+  us: enLocale,
+  "en-us": enLocale
 };
 
 const localLang = navigator.language.split("-")[0];
