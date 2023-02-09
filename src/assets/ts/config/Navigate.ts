@@ -6,8 +6,8 @@ export interface NavigateTabItemEx extends NavigateTabItem {
 }
 
 export const topBtnList: Array<NavigateTabItemEx> = [
-  { name: "Home", icon: "icon-homepage", url: "/", component: () => import("@/views/common/HomeView.vue") },
-  { name: "Todo", icon: "icon-archived-item", url: "/todo", component: () => import("@/views/common/TodoView.vue") },
+  { name: "Home主目录", icon: "icon-homepage", url: "/", component: () => import("@/views/common/HomeView.vue") },
+  { name: "Todo", icon: "icon-message", url: "/todo", component: () => import("@/views/common/TodoView.vue") },
   { name: "Date", icon: "icon-date", url: "/date", component: () => import("@/views/common/DateView.vue") }
 ];
 

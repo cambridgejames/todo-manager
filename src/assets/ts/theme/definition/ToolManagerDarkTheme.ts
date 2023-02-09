@@ -12,5 +12,6 @@ export const themeData = {
   "devui-primary": "#3573f0",
   "devui-primary-hover": "#3168d5",
   "devui-primary-active": "#2857b4",
-  "tm-primary-hover": "#393b40"
+  "tm-primary-hover": "#393b40",
+  "tm-primary-border": "#43454a"
 };

@@ -4,6 +4,7 @@
       <div v-for="(item, index) in topViewBtn" :key="index" class="button-group-div">
         <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
           <d-icon :name="item.icon" :size="iconSize"/>
+          <div class="btn-tip-box">{{ item.name }}</div>
         </button>
       </div>
     </div>
@@ -11,6 +12,7 @@
       <div v-for="(item, index) in bottomViewBtn" :key="index" class="button-group-div">
         <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
           <d-icon :name="item.icon" :size="iconSize"/>
+          <div class="btn-tip-box">{{ item.name }}</div>
         </button>
       </div>
     </div>
@@ -89,6 +91,8 @@ onMounted(() => {
 $button-group-btn-padding: 6px;
 $button-group-btn-radius: 8px;
 $button-group-btn-inner-padding: 8px;
+$button-group-btn-tip-outer-padding: 2px;
+$button-group-btn-tip-inner-padding: 12px;
 
 .navigate-tab-box {
   width: constants.$main-asside-width;
@@ -97,24 +101,43 @@ $button-group-btn-inner-padding: 8px;
   display: flex;
   flex-direction: column;
   background-color: var(--devui-global-bg);
+  user-select: none;
 
   %btn-group {
     width: 100%;
-    overflow: hidden;
 
     .button-group-div {
       width: 100%;
       height: constants.$main-asside-width;
-      position: relative;
+      padding: $button-group-btn-padding;
 
       .button-group-btn {
-        position: absolute;
-        top: $button-group-btn-padding;
-        left: $button-group-btn-padding;
-        width: calc(#{constants.$main-asside-width} - 2 * #{$button-group-btn-padding});
-        height: calc(#{constants.$main-asside-width} - 2 * #{$button-group-btn-padding});
+        position: relative;
+        width: 100%;
+        height: 100%;
         border-radius: $button-group-btn-radius;
         padding: $button-group-btn-inner-padding;
+
+        .btn-tip-box {
+          display: none;
+          position: absolute;
+          height: calc(100% - $button-group-btn-tip-outer-padding * 2);
+          width: max-content;
+          top: $button-group-btn-tip-outer-padding;
+          left: calc(100% + $button-group-btn-inner-padding + $button-group-btn-tip-outer-padding);
+          padding: 0 $button-group-btn-tip-inner-padding;
+          font-size: var(--devui-font-size);
+          line-height: var(--devui-font-size);
+          vertical-align: middle;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid var(--tm-primary-border);
+          border-radius: $button-group-btn-radius;
+          color: var(--devui-icon-fill);
+          background-color: var(--tm-primary-hover);
+          z-index: 200;
+        }
 
         .devui-icon__container {
           color: var(--devui-icon-fill);
@@ -126,9 +149,12 @@ $button-group-btn-inner-padding: 8px;
 
         &:hover {
           background-color: var(--tm-primary-hover);
+          .btn-tip-box {
+            display: flex;
+          }
         }
 
-        &[class*="selected"] {
+        &.selected {
           background-color: var(--devui-primary);
 
           .devui-icon__container {
