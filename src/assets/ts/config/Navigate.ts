@@ -6,14 +6,13 @@ export interface NavigateTabItemEx extends NavigateTabItem {
 }
 
 export const topBtnList: Array<NavigateTabItemEx> = [
-  { name: "Home主目录", icon: "icon-homepage", url: "/", component: () => import("@/views/common/HomeView.vue") },
-  { name: "Todo", icon: "icon-message", url: "/todo", component: () => import("@/views/common/TodoView.vue") },
-  { name: "Date", icon: "icon-date", url: "/date", component: () => import("@/views/common/DateView.vue") }
+  { name: "sideBar.home", icon: "icon-homepage", url: "/", component: () => import("@/views/common/HomeView.vue") },
+  { name: "sideBar.todo", icon: "icon-message", url: "/todo", component: () => import("@/views/common/TodoView.vue") },
+  { name: "sideBar.date", icon: "icon-date", url: "/date", component: () => import("@/views/common/DateView.vue") }
 ];
 
 export const bottomBtnList: Array<NavigateTabItemEx> = [
-  { name: "User", icon: "icon-mine", url: "/user", component: () => import("@/views/common/UserView.vue") },
-  { name: "Settings", icon: "icon-setting", url: "/settings", component: () => import("@/views/common/SettingsView.vue") }
+  { name: "sideBar.settings", icon: "icon-setting", url: "/settings", component: () => import("@/views/common/SettingsView.vue") }
 ];
 
 export const allBtnList: Array<NavigateTabItemEx> = [...topBtnList, ...bottomBtnList];

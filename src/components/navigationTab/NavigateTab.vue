@@ -4,7 +4,7 @@
       <div v-for="(item, index) in topViewBtn" :key="index" class="button-group-div">
         <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
           <d-icon :name="item.icon" :size="iconSize"/>
-          <div class="btn-tip-box">{{ item.name }}</div>
+          <div class="btn-tip-box">{{ $t(item.name) }}</div>
         </button>
       </div>
     </div>
@@ -12,7 +12,7 @@
       <div v-for="(item, index) in bottomViewBtn" :key="index" class="button-group-div">
         <button :class="['button-group-btn', { 'selected': item.enable }]" @click.stop="gotoPath(item.url)">
           <d-icon :name="item.icon" :size="iconSize"/>
-          <div class="btn-tip-box">{{ item.name }}</div>
+          <div class="btn-tip-box">{{ $t(item.name) }}</div>
         </button>
       </div>
     </div>
