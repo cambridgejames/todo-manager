@@ -4,8 +4,8 @@
     <div ref="firstPanel" :class="['split-panel-slot', 'first', direction === 'row' ? 'row' : 'col']">
       <slot name="first"></slot>
     </div>
-    <div ref="splitBar" class="tm-split-bar" draggable="false" @dragstart.stop.prevent
-         @mousedown.left.stop.prevent="onDragSplitBar"/>
+    <div ref="splitBar" :class="['tm-split-bar', {'dragging': dragging}]"
+         draggable="false" @dragstart.stop.prevent @mousedown.left.stop.prevent="onDragSplitBar"/>
     <div ref="secondPanel" :class="['split-panel-slot', 'second', direction === 'row' ? 'row' : 'col']">
       <slot name="second"></slot>
     </div>
@@ -38,6 +38,7 @@ const props = defineProps({
 const size = ref(props.size);
 const minSize = ref(props.minSize);
 const direction = ref(props.direction === "row" ? "row" : "column");
+const dragging = ref(false);
 
 const tmSplitPanel = ref<HTMLElement>();
 const firstPanel = ref<HTMLElement>();
@@ -107,7 +108,7 @@ const onDragSplitBar = (event: MouseEvent): void => {
       startPoint.y = event.clientY;
     }
   };
-  onMouseDown(event, null, onDragFunc, null, null);
+  onMouseDown(event, () => { dragging.value = true; }, onDragFunc, null, () => { dragging.value = false; });
 };
 </script>
 
@@ -132,7 +133,7 @@ $tm-split-direction-var: var(--tm-split-direction, row);
       flex-shrink: 0;
       border: 1px solid var(--devui-global-bg);
 
-      &:hover {
+      &:hover, &.dragging {
         border-color: var(--devui-primary);
       }
 
