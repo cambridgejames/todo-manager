@@ -38,7 +38,9 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "conf/*"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -55,11 +57,16 @@
     },
     "windows": [
       {
-        "fullscreen": false,
-        "height": 600,
-        "resizable": true,
+        "label": "mainApplication",
         "title": "todo-manager",
-        "width": 800
+        "width": 1000,
+        "height": 600,
+        "minWidth": 500,
+        "minHeight": 300,
+        "center": true,
+        "fullscreen": false,
+        "resizable": true,
+        "decorations": false
       }
     ]
   }
