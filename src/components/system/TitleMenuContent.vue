@@ -7,7 +7,7 @@
       <div class="system-button minimize" @click="minimize">
         <div class="inner-icon"></div>
       </div>
-      <div class="system-button maximize" @click="maximize">
+      <div :class="['system-button', 'maximize', { 'maximized': isMaximized() }]" @click="maximize">
         <div class="inner-icon"></div>
       </div>
       <div class="system-button close" @click="close">
@@ -23,6 +23,12 @@ import { appWindow } from "@tauri-apps/api/window";
 const minimize = () => appWindow.minimize();
 const maximize = () => appWindow.toggleMaximize();
 const close = () => appWindow.close();
+
+const isMaximized = () => {
+  // const solution = appWindow.isMaximized();
+  console.log(126465);
+  return false;
+};
 
 </script>
 
@@ -77,6 +83,10 @@ const close = () => appWindow.close();
         background-color: inherit;
         background-image: url("@/assets/img/button_title_function.png");
         background-position: -10px -10px;
+      }
+
+      &.maximized > .inner-icon {
+        background-position: 0 -10px;
       }
 
       &:hover {
