@@ -24,6 +24,15 @@
         "hide": true,
         "close": true,
         "startDragging": true
+      },
+      "fs": {
+        "scope": [
+          "$RESOURCE/conf/*"
+        ],
+        "readFile": true
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {

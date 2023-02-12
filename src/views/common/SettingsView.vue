@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, reactive } from "vue";
+import { inject } from "vue";
 import { ThemeService } from "devui-theme";
 import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
 import { useI18n } from "vue-i18n";
+import { setConfigure } from "@/assets/ts/config/SettingsUtil";
 
 const themeService: ThemeService | null | undefined = inject("themeService");
 const changeTheme = (): void => {
@@ -18,12 +19,9 @@ const changeTheme = (): void => {
 };
 
 const { locale } = useI18n();
-const state = reactive({
-  curLanguage: "zh-cn"
-});
 const changeLanguage = () => {
-  state.curLanguage = state.curLanguage === "zh-cn" ? "en-us" : "zh-cn";
-  locale.value = state.curLanguage;
+  locale.value = locale.value === "zh-cn" ? "en-us" : "zh-cn";
+  setConfigure("$.common.lang", locale.value);
 };
 </script>
 
