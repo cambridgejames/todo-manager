@@ -1,5 +1,5 @@
 <template>
-  <div id="title-menu-content" class="title-menu-content">
+  <div ref="titleMenuContent" id="title-menu-content" class="title-menu-content">
     <div class="title-icon"/>
     <div style="width: max-content;"></div>
     <div data-tauri-drag-region style="width: 100%;"></div>
@@ -7,7 +7,7 @@
       <div class="system-button minimize" @click="minimize">
         <div class="inner-icon"></div>
       </div>
-      <div :class="['system-button', 'maximize', { 'maximized': isMaximized() }]" @click="maximize">
+      <div :class="['system-button', 'maximize', { 'maximized': isMaximizedVal }]" @click="maximize">
         <div class="inner-icon"></div>
       </div>
       <div class="system-button close" @click="close">
@@ -18,17 +18,23 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, onUnmounted, ref } from "vue";
 import { appWindow } from "@tauri-apps/api/window";
 
 const minimize = () => appWindow.minimize();
 const maximize = () => appWindow.toggleMaximize();
 const close = () => appWindow.close();
 
-const isMaximized = () => {
-  // const solution = appWindow.isMaximized();
-  console.log(126465);
-  return false;
-};
+const isMaximizedVal = ref(false);
+const reGetIsMaximized = () => appWindow.isMaximized().then((isMaximized) => { isMaximizedVal.value = isMaximized; });
+onMounted(() => {
+  reGetIsMaximized();
+  appWindow.isMaximized().then((isMaximized) => { isMaximizedVal.value = isMaximized; });
+  window.addEventListener("resize", reGetIsMaximized);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", reGetIsMaximized);
+});
 
 </script>
 

@@ -6,7 +6,6 @@
 mod window;
 
 use crate::window::shadow::set_window_shadow;
-use crate::window::event::WindowEventManager;
 
 fn main() {
     let app = tauri::Builder::default()
