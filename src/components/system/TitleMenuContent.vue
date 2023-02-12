@@ -1,16 +1,16 @@
 <template>
-  <div data-tauri-drag-region id="title-menu-content" class="title-menu-content">
+  <div id="title-menu-content" class="title-menu-content">
     <div class="title-icon"/>
-    <div style="width: 100%"></div>
-    <div style="width: 100%;"></div>
+    <div style="width: max-content;"></div>
+    <div data-tauri-drag-region style="width: 100%;"></div>
     <div style="width: 141px; flex-shrink: 0; display: flex; flex-direction: row;">
-      <div class="system-button minimize">
+      <div class="system-button minimize" @click="minimize">
         <div class="inner-icon"></div>
       </div>
-      <div class="system-button maximize">
+      <div class="system-button maximize" @click="maximize">
         <div class="inner-icon"></div>
       </div>
-      <div class="system-button close">
+      <div class="system-button close" @click="close">
         <div class="inner-icon"></div>
       </div>
     </div>
@@ -18,6 +18,12 @@
 </template>
 
 <script lang="ts" setup>
+import { appWindow } from "@tauri-apps/api/window";
+
+const minimize = () => appWindow.minimize();
+const maximize = () => appWindow.toggleMaximize();
+const close = () => appWindow.close();
+
 </script>
 
 <style lang="scss" scoped>

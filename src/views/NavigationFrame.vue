@@ -2,7 +2,7 @@
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
       <d-header data-tauri-drag-region class="navigation-header">
-        <title-menu-content data-tauri-drag-region/>
+        <title-menu-content/>
       </d-header>
       <d-layout class="navigation-box">
         <d-aside class="navigation-left-aside">
