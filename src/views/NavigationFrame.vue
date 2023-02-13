@@ -23,8 +23,8 @@
 </template>
 
 <script lang="ts" setup>
-import NavigateTab from "@/components/navigationTab/NavigateTab.vue";
-import TmSplitPanel from "@/components/tmSplitPanel/TmSplitPanel.vue";
+import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
+import TmSplitPanel from "@/components/ui/tmSplitPanel/TmSplitPanel.vue";
 
 import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
 import TitleMenuContent from "@/components/system/TitleMenuContent.vue";

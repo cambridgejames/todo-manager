@@ -1,5 +1,5 @@
 import { Component } from "vue";
-import { NavigateTabItem } from "@/components/navigationTab/ts/NavigateTabItem";
+import { NavigateTabItem } from "@/components/ui/navigationTab/ts/NavigateTabItem";
 
 export interface NavigateTabItemEx extends NavigateTabItem {
   component: Component
