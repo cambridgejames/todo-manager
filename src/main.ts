@@ -3,6 +3,9 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
+// 国际化相关配置
+import i18n from "@/i18n";
+
 // DevUI相关配置
 import DevUI from "vue-devui";
 import "vue-devui/style.css";
@@ -22,4 +25,4 @@ themeService?.applyTheme(toolManagerDarkTheme);
 
 const app = createApp(App);
 app.provide("themeService", themeService);
-app.use(DevUI).use(router).mount("#app");
+app.use(i18n).use(DevUI).use(router).mount("#app");

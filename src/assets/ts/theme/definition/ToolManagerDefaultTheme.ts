@@ -9,6 +9,7 @@ export const defaultThemeData = {
   "devui-animation-duration-slow": "150ms",
   "devui-animation-duration-base": "100ms",
   "devui-animation-duration-fast": "100ms",
+  "tm-header-height": "40px",
   "tm-nav-tab-padding": "6px",
   "tm-article-padding": "10px"
 };
