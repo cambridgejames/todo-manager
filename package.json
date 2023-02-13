@@ -17,6 +17,7 @@
     "devui-theme": "^0.0.4",
     "jsonpath-plus": "^7.2.0",
     "path": "^0.12.7",
+    "vditor": "^3.9.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-devui": "^1.5.0",
