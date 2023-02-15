@@ -79,7 +79,7 @@
     "windows": [
       {
         "label": "mainApplication",
-        "title": "todo-manager",
+        "title": "Virgo",
         "width": 1000,
         "height": 600,
         "minWidth": 500,
@@ -87,7 +87,7 @@
         "center": true,
         "fullscreen": false,
         "resizable": true,
-        "decorations": false
+        "decorations": true
       }
     ]
   }

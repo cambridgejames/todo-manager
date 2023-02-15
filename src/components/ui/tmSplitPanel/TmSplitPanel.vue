@@ -144,14 +144,9 @@ $tm-split-direction-var: var(--tm-split-direction, row);
       }
     }
 
-    &.first {
-      overflow: hidden;
-    }
-
     &.second {
       flex-grow: 0;
       flex-shrink: 0;
-      overflow: hidden;
     }
 
     &.row {
