@@ -8,7 +8,7 @@
       </template>
       <template #second>
         <div class="todo-view-content todo-editor-content">
-          <div ref="editorRef"></div>
+          <markdown-editor></markdown-editor>
         </div>
       </template>
     </tm-split-panel>
@@ -17,6 +17,7 @@
 
 <script lang="ts" setup>
 import TmSplitPanel from "@/components/ui/tmSplitPanel/TmSplitPanel.vue";
+import MarkdownEditor from "@/components/ui/ckEditor/MarkdownEditor.vue";
 </script>
 
 <style lang="scss" scoped>

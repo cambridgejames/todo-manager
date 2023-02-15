@@ -13,6 +13,9 @@ import "@devui-design/icons/icomoon/devui-icon.css";
 import { ThemeService, ThemeServiceInit } from "devui-theme";
 import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
 
+// 富文本编辑器
+import CKEditor from "@ckeditor/ckeditor5-vue";
+
 // 自定义全局样式
 import "./assets/css/index.css";
 
@@ -25,4 +28,4 @@ themeService?.applyTheme(toolManagerDarkTheme);
 
 const app = createApp(App);
 app.provide("themeService", themeService);
-app.use(i18n).use(DevUI).use(router).mount("#app");
+app.use(i18n).use(DevUI).use(CKEditor).use(router).mount("#app");
