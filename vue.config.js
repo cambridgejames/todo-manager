@@ -1,7 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
 
 const path = require("path");
-const resove = dir => path.join(__dirname, dir);
+const resolve = dir => path.join(__dirname, dir);
 
 module.exports = defineConfig({
   transpileDependencies: true,
@@ -17,8 +17,14 @@ module.exports = defineConfig({
   },
   configureWebpack: {
     experiments: {
-      topLevelAwait: true,
+      topLevelAwait: true
     }
   },
-  chainWebpack: config => config.resolve.alias.set("@", resove("src"))
+  chainWebpack: config => {
+    config.resolve.alias.set("@", resolve("src"));
+    config.plugin("html").tap(args => {
+      args[0].title = "Photodon";
+      return args;
+    });
+  }
 });

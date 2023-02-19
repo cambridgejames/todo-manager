@@ -7,9 +7,13 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "serve:binary": "tauri dev",
-    "build:binary": "tauri build"
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
   },
+  "main": "background.js",
+  "license": "MIT",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
     "@ckeditor/ckeditor5-vue": "^4.0.1",
@@ -22,9 +26,10 @@
     "vue-class-component": "^8.0.0-0",
     "vue-devui": "^1.5.0",
     "vue-i18n": "^9.3.0-beta.16",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.10"
   },
   "devDependencies": {
+    "@types/electron-devtools-installer": "^2.2.0",
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -39,6 +44,8 @@
     "@vue/test-utils": "^2.0.0-0",
     "@vue/vue3-jest": "^27.0.0-alpha.1",
     "babel-jest": "^27.0.6",
+    "electron": "^13.0.0",
+    "electron-devtools-installer": "^3.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
@@ -47,7 +54,10 @@
     "jest": "^27.0.5",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
+    "spectron": "15.0.0",
     "ts-jest": "^27.0.4",
-    "typescript": "~4.5.5"
+    "ts-loader": "~8.2.0",
+    "typescript": "~4.5.5",
+    "vue-cli-plugin-electron-builder": "~2.1.1"
   }
 }

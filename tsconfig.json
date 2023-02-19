@@ -13,6 +13,7 @@
     "useDefineForClassFields": true,
     "sourceMap": true,
     "resolveJsonModule": true,
+    "useUnknownInCatchVariables": false,
     "baseUrl": ".",
     "types": [
       "webpack-env",

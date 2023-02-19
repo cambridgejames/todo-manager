@@ -1,0 +1,25 @@
+{
+  "productName": "Photodon",
+  "directories": {
+    "output": "dist_electron"
+  },
+  "mac": {
+    "icon": "public/icon/icon.icns",
+    "artifactName": "${productName}_${version}_setup.${ext}"
+  },
+  "win": {
+    "icon": "public/icon/icon.icon",
+    "artifactName": "${productName}_${version}_setup.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "public/icon/icon.ico",
+    "uninstallerIcon": "public/icon/icon.ico",
+    "installerHeader": "./public/icon/icon.ico",
+    "installerHeaderIcon": "./public/icon/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  }
+}
