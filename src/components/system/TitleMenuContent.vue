@@ -4,13 +4,13 @@
     <div style="width: max-content;"></div>
     <div data-tauri-drag-region style="width: 100%;"></div>
     <div style="width: 141px; flex-shrink: 0; display: flex; flex-direction: row;">
-      <div class="system-button minimize" @click="minimize">
+      <div class="system-button minimize">
         <div class="inner-icon"></div>
       </div>
-      <div :class="['system-button', 'maximize', { 'maximized': isMaximizedVal }]" @click="maximize">
+      <div :class="['system-button', 'maximize', { 'maximized': isMaximizedVal }]">
         <div class="inner-icon"></div>
       </div>
-      <div class="system-button close" @click="close">
+      <div class="system-button close">
         <div class="inner-icon"></div>
       </div>
     </div>
@@ -18,24 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
-import { appWindow } from "@tauri-apps/api/window";
+import { ref } from "vue";
 
-const minimize = () => appWindow.minimize();
-const maximize = () => appWindow.toggleMaximize();
-const close = () => appWindow.close();
-
-const isMaximizedVal = ref(false);
-const reGetIsMaximized = () => appWindow.isMaximized().then((isMaximized) => { isMaximizedVal.value = isMaximized; });
-onMounted(() => {
-  reGetIsMaximized();
-  appWindow.isMaximized().then((isMaximized) => { isMaximizedVal.value = isMaximized; });
-  window.addEventListener("resize", reGetIsMaximized);
-});
-onUnmounted(() => {
-  window.removeEventListener("resize", reGetIsMaximized);
-});
-
+const isMaximizedVal = ref<Boolean>(false);
 </script>
 
 <style lang="scss" scoped>
