@@ -1,7 +1,7 @@
 <template>
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
-      <d-header data-tauri-drag-region class="navigation-header">
+      <d-header v-if="false" data-tauri-drag-region class="navigation-header">
         <title-menu-content/>
       </d-header>
       <d-layout class="navigation-box">
@@ -9,13 +9,7 @@
           <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
         </d-aside>
         <d-content class="navigation-main-content">
-          <tm-split-panel direction="row">
-            <template #first>
-              <router-view/>
-            </template>
-            <template #second>
-            </template>
-          </tm-split-panel>
+          <router-view/>
         </d-content>
       </d-layout>
     </d-layout>
@@ -23,9 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import NavigateTab from "@/components/navigationTab/NavigateTab.vue";
-import TmSplitPanel from "@/components/tmSplitPanel/TmSplitPanel.vue";
-
+import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
 import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
 import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
 </script>

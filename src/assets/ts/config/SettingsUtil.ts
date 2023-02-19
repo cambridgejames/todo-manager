@@ -25,4 +25,5 @@ export const setConfigure = (jsonPath: string, confStr: string): void => {
       console.log(a, b, c);
     }
   });
+  console.log(confStr);
 };

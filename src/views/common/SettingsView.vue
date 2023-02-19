@@ -25,7 +25,7 @@ const changeLanguage = () => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .settings-box {
   width: 100%;
   height: 100%;
