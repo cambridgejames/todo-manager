@@ -26,5 +26,10 @@ module.exports = defineConfig({
       args[0].title = "Photodon";
       return args;
     });
+  },
+  pluginOptions: {
+    electronBuilder: {
+      customFileProtocol: "./"
+    }
   }
 });
