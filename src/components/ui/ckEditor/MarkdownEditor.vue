@@ -9,30 +9,6 @@ import { ref } from "vue";
 const editorData = ref("");
 const editorConfig = {
   toolbar: {
-    items: [
-      "undo", "redo",
-      "|",
-      "findAndReplace", "selectAll",
-      "|",
-      "heading",
-      "|",
-      "removeFormat", "bold", "italic", "strikethrough", "underline", "code", "subscript", "superscript",
-      "|",
-      "specialCharacters", "horizontalLine", "pageBreak",
-      "|",
-      "-",
-      "highlight", "fontSize", "fontFamily", "fontColor", "fontBackgroundColor",
-      "|",
-      "link", "blockQuote", "insertTable", "uploadImage", "codeBlock", "htmlEmbed",
-      "|",
-      "bulletedList", "numberedList", "todoList",
-      "|",
-      "outdent", "indent", "alignment",
-      "|",
-      "textPartLanguage",
-      "|",
-      "sourceEditing"
-    ],
     shouldNotGroupWhenFull: true
   }
 };
