@@ -1,4 +1,4 @@
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import * as path from "path";
@@ -11,6 +11,7 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
+  Menu.setApplicationMenu(null);
   const win = new BrowserWindow({
     width: 800,
     height: 600,
