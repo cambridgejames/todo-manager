@@ -38,7 +38,7 @@ const props = defineProps({
   }
 });
 
-const iconSize = "22px";
+const iconSize = "20px";
 const router = useRouter();
 const topViewBtn = ref<Array<NavigateTabItemEx>>([]);
 const bottomViewBtn = ref<Array<NavigateTabItemEx>>([]);
@@ -88,16 +88,17 @@ onMounted(() => {
 <style scoped lang="scss">
 @use "~@/assets/css/constants.scss";
 
-$button-group-btn-padding: 6px;
+$button-group-btn-padding: 5px;
 $button-group-btn-radius: 8px;
-$button-group-btn-inner-padding: 8px;
-$button-group-btn-tip-outer-padding: 2px;
-$button-group-btn-tip-inner-padding: 12px;
+$button-group-btn-inner-padding: 5px;
+$button-group-btn-tip-outer-padding: 0px;
+$button-group-btn-tip-inner-radius: 4px;
+$button-group-btn-tip-inner-padding: 8px;
 
 .navigate-tab-box {
   width: constants.$main-asside-width;
   height: 100%;
-  padding: var(--tm-nav-tab-padding, 6px) 0;
+  padding: calc(var(--tm-article-padding) - $button-group-btn-padding) 0;
   display: flex;
   flex-direction: column;
   background-color: var(--devui-global-bg);
@@ -133,7 +134,7 @@ $button-group-btn-tip-inner-padding: 12px;
           align-items: center;
           justify-content: center;
           border: 1px solid var(--tm-primary-border);
-          border-radius: $button-group-btn-radius;
+          border-radius: $button-group-btn-tip-inner-radius;
           color: var(--devui-icon-fill);
           background-color: var(--tm-primary-hover);
           z-index: 200;

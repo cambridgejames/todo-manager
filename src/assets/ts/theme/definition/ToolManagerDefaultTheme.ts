@@ -24,7 +24,6 @@ const ckEditorThemeData = {
  */
 const todoManagerThemeData = {
   "tm-header-height": "40px",
-  "tm-nav-tab-padding": "6px",
   "tm-article-padding": "10px"
 };
 
