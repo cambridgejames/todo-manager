@@ -1,8 +1,8 @@
 <template>
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
-      <d-header v-if="false" data-tauri-drag-region class="navigation-header">
-        <title-menu-content/>
+      <d-header data-tauri-drag-region class="navigation-header">
+        <title-menu-content v-if="false"/>
       </d-header>
       <d-layout class="navigation-box">
         <d-aside class="navigation-left-aside">
@@ -31,12 +31,14 @@ import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
   background-color: var(--devui-global-bg-normal);
 
   .navigation-header {
-    height: var(--tm-header-height);
-    min-height: var(--tm-header-height);
     flex-shrink: 0;
     flex-grow: 0;
     background-color: var(--devui-global-bg);
     border-bottom: 1px solid var(--devui-global-bg-normal);
+
+    &.devui-layout__header {
+      min-height: 0;
+    }
   }
 
   .navigation-left-aside {
