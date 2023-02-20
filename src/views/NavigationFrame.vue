@@ -45,7 +45,10 @@ import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
   }
 
   .navigation-main-content {
+    width: calc(100% - #{constants.$main-asside-width});
     height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 }
 </style>

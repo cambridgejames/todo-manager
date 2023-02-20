@@ -1,5 +1,10 @@
 <template>
-  <ckeditor :editor="ClassicEditor" v-model="editorData" :config="editorConfig"></ckeditor>
+  <div class="markdown-editor-box">
+    <div class="markdown-editor-top"></div>
+    <div class="markdown-editor-main">
+      <ckeditor :editor="ClassicEditor" v-model="editorData" :config="editorConfig"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -14,6 +19,55 @@ const editorConfig = {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.markdown-editor-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: none;
 
+  .markdown-editor-top {
+    height: 40px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: var(--devui-global-bg);
+  }
+
+  .markdown-editor-main {
+    height: 100%;
+    overflow: hidden auto;
+
+    :deep(p::selection) {
+      background: var(--tm-text-select-bg);
+    }
+
+    :deep(.ck-editor) {
+      height: 100%;
+      min-height: 100%;
+
+      .ck-editor__top {
+        display: none;
+      }
+
+      .ck-editor__main {
+        height: 100%;
+        min-height: 100%;
+      }
+
+      .ck-content {
+        min-height: 100%;
+      }
+
+      .ck-toolbar, .ck-editor__editable_inline {
+        border: none;
+      }
+
+      .ck-editor__editable.ck-focused {
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
 </style>
