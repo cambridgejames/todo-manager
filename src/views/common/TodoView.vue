@@ -1,6 +1,6 @@
 <template>
   <div id="date-box" class="date-box">
-    <tm-split-panel direction="row">
+    <tm-split-panel direction="row" size="66%">
       <template #first>
         <div class="todo-view-content todo-list-content">
           todo

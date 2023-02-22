@@ -19,7 +19,7 @@ const editorConfig = {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .markdown-editor-box {
   display: flex;
   flex-direction: column;
@@ -38,11 +38,11 @@ const editorConfig = {
     height: 100%;
     overflow: hidden auto;
 
-    :deep(p::selection) {
+    *::selection {
       background: var(--tm-text-select-bg);
     }
 
-    :deep(.ck-editor) {
+    .ck-editor {
       height: 100%;
       min-height: 100%;
 

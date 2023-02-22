@@ -2,9 +2,9 @@
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
       <d-header data-tauri-drag-region class="navigation-header">
-        <title-menu-content v-if="false"/>
+        <title-menu-content/>
       </d-header>
-      <d-layout class="navigation-box">
+      <d-layout class="navigation-box navigation-document-content">
         <d-aside class="navigation-left-aside">
           <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
         </d-aside>
@@ -29,6 +29,12 @@ import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
   width: 100%;
   height: 100%;
   background-color: var(--devui-global-bg-normal);
+
+  &.navigation-document-content {
+    height: calc(100% - var(--tm-header-height));
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
 
   .navigation-header {
     flex-shrink: 0;

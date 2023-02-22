@@ -1,5 +1,6 @@
 {
   "productName": "Photodon",
+  "icon": "public/icon/icon.icon",
   "directories": {
     "output": "dist_electron"
   },

@@ -10,14 +10,19 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
-  Menu.setApplicationMenu(null);
   const win = new BrowserWindow({
-    width: 800,
+    width: 900,
     height: 600,
-    title: "Photodon",
+    title: "ElectricTodo",
+    titleBarStyle: "hidden",
+    backgroundColor: "#2b2d30",
+    titleBarOverlay: {
+      color: "#2b2d30",
+      symbolColor: "#8c8c8c",
+      height: 40
+    },
     icon: path.join(__dirname, "../public/icon/icon.ico"), // Windows图标
     webPreferences: {
-      enableRemoteModule: !!process.env.IS_TEST,
       nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
@@ -74,4 +79,6 @@ if (isDevelopment) {
       app.quit();
     });
   }
+} else {
+  Menu.setApplicationMenu(null);
 }
