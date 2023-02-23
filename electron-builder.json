@@ -4,6 +4,9 @@
   "directories": {
     "output": "dist_electron"
   },
+  "extraResources": [
+    { "from": "./assets", "to": "../" }
+  ],
   "mac": {
     "icon": "public/icon/icon.icns",
     "artifactName": "${productName}_${version}_setup.${ext}"

@@ -10,7 +10,7 @@ const messages = {
   "en-us": enLocale
 };
 
-const lang = getConfigure("$.common.lang");
+const lang = await getConfigure("$.common.lang");
 
 const i18n = createI18n({
   globalInjection: true, // 全局生效$t

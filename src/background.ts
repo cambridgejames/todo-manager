@@ -1,15 +1,16 @@
 import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
-
-const isDevelopment = process.env.NODE_ENV !== "production";
+import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
 ]);
+let rollbackFunc: RollbackFunc | null = null;
 
 async function createWindow() {
+  rollbackFunc = await getRollbackFunc();
   const win = new BrowserWindow({
     width: 900,
     height: 600,
@@ -23,8 +24,8 @@ async function createWindow() {
     },
     icon: path.join(__dirname, "../public/icon/icon.ico"), // Windows图标
     webPreferences: {
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
   if (process.platform === "darwin") {
@@ -44,29 +45,26 @@ async function createWindow() {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-  // On macOS, it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+  if (rollbackFunc) {
+    rollbackFunc(); // 回滚配置文件
+  }
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
 app.on("activate", async () => {
-  // On macOS, it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     await createWindow();
   }
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
   await createWindow();
 });
 
 // Exit cleanly on request from parent process in development mode.
+const isDevelopment = process.env.NODE_ENV !== "production";
 if (isDevelopment) {
   if (process.platform === "win32") {
     process.on("message", (data) => {
