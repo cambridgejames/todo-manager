@@ -1,5 +1,5 @@
 {
-  "productName": "Photodon",
+  "productName": "ElectronTodo",
   "icon": "public/icon/icon.icon",
   "directories": {
     "output": "dist_electron"
