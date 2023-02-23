@@ -30,7 +30,8 @@ module.exports = {
     semi: ["error", "always"],
     "no-empty": "error",
     "no-unused-vars": "off",
-    "operator-linebreak": ["error", "before"]
+    "operator-linebreak": ["error", "before"],
+    "@typescript-eslint/no-var-requires": 0
   },
   overrides: [
     {

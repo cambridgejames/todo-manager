@@ -11,7 +11,7 @@ import { inject } from "vue";
 import { ThemeService } from "devui-theme";
 import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
 import { useI18n } from "vue-i18n";
-import { setConfigure } from "@/assets/ts/config/SettingsUtil";
+import { setConfigure } from "@/assets/ts/adapter/SettingsUtil";
 
 const themeService: ThemeService | null | undefined = inject("themeService");
 const changeTheme = (): void => {

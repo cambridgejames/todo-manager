@@ -2,8 +2,6 @@ import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
 
-const isDevelopment = process.env.NODE_ENV !== "production";
-
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
@@ -23,8 +21,8 @@ async function createWindow() {
     },
     icon: path.join(__dirname, "../public/icon/icon.ico"), // Windows图标
     webPreferences: {
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
   if (process.platform === "darwin") {
@@ -67,6 +65,7 @@ app.on("ready", async () => {
 });
 
 // Exit cleanly on request from parent process in development mode.
+const isDevelopment = process.env.NODE_ENV !== "production";
 if (isDevelopment) {
   if (process.platform === "win32") {
     process.on("message", (data) => {
