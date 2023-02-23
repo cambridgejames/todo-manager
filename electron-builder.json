@@ -5,7 +5,7 @@
     "output": "dist_electron"
   },
   "extraResources": [
-    { "from": "./assets", "to": "../" }
+    { "from": "./build", "to": "../" }
   ],
   "mac": {
     "icon": "public/icon/icon.icns",
