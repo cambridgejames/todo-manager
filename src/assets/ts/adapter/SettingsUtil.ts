@@ -1,6 +1,5 @@
 import defaultConfigure from "./settings.default.json";
 import * as jsonPath from "jsonpath";
-import { JSONPath } from "jsonpath-plus";
 import { readFile, writeFile } from "@/assets/ts/adapter/file";
 
 const CONFIG_FILE_URL = "/config/settings.user.json";
