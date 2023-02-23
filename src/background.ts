@@ -1,13 +1,16 @@
 import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
+import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
 ]);
+let rollbackFunc: RollbackFunc | null = null;
 
 async function createWindow() {
+  rollbackFunc = await getRollbackFunc();
   const win = new BrowserWindow({
     width: 900,
     height: 600,
@@ -42,6 +45,9 @@ async function createWindow() {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
+  if (rollbackFunc) {
+    rollbackFunc(); // 回滚配置文件
+  }
   if (process.platform !== "darwin") {
     app.quit();
   }

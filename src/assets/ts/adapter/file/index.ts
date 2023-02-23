@@ -19,13 +19,13 @@ const getConfigPath = (pathToFile: string): string => {
  *
  * @param pathToFile 配置文件的URL
  */
-export const readFile = (pathToFile: string): Promise<JSON> => {
+export const readFile = (pathToFile: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     fs.readFile(getConfigPath(pathToFile), CONFIG_FILE_ENCODING, (error, data) => {
       if (error) {
         reject(error);
       } else {
-        resolve(JSON.parse(data));
+        resolve(data);
       }
     });
   });

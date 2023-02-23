@@ -11,13 +11,13 @@ const CONFIG_FILE_INDENTATION: number = 2;
  * @param jsonPathStr JSONPath
  */
 export const getConfigure = async (jsonPathStr: string): Promise<string | undefined> => {
-  const userConfigJSON: JSON = await readFile(CONFIG_FILE_URL);
+  const userConfigJSON: JSON = JSON.parse(await readFile(CONFIG_FILE_URL));
   const solution = jsonPath.value(userConfigJSON, jsonPathStr);
   return solution === undefined ? jsonPath.value(defaultConfigure, jsonPathStr) : solution;
 };
 
 export const setConfigure = async (jsonPathStr: string, confStr: string): Promise<void> => {
-  const userConfigJSON: JSON = await readFile(CONFIG_FILE_URL);
+  const userConfigJSON: JSON = JSON.parse(await readFile(CONFIG_FILE_URL));
   jsonPath.value(userConfigJSON, jsonPathStr, confStr);
   return writeFile(`${JSON.stringify(userConfigJSON, null, CONFIG_FILE_INDENTATION)}\n`, CONFIG_FILE_URL);
 };
