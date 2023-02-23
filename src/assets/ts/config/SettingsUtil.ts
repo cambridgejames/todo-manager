@@ -1,8 +1,9 @@
-import defaultConfigure from "./settings.default.json";
+import defaultConfigure from "@/build/config/settings.default.json";
 import * as jsonPath from "jsonpath";
 import { readFile, writeFile } from "@/assets/ts/adapter/file";
 
-const CONFIG_FILE_URL = "/config/settings.user.json";
+const CONFIG_FILE_URL: string = "/config/settings.user.json";
+const CONFIG_FILE_INDENTATION: number = 2;
 
 /**
  * 根据JSONPath获取配置
@@ -18,6 +19,5 @@ export const getConfigure = async (jsonPathStr: string): Promise<string | undefi
 export const setConfigure = async (jsonPathStr: string, confStr: string): Promise<void> => {
   const userConfigJSON: JSON = await readFile(CONFIG_FILE_URL);
   jsonPath.value(userConfigJSON, jsonPathStr, confStr);
-  console.log(userConfigJSON);
-  return writeFile(JSON.stringify(userConfigJSON), CONFIG_FILE_URL);
+  return writeFile(`${JSON.stringify(userConfigJSON, null, CONFIG_FILE_INDENTATION)}\n`, CONFIG_FILE_URL);
 };

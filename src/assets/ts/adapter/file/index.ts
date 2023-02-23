@@ -1,8 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
 
-const IS_DEVELOPMENT = process.env.NODE_ENV !== "production";
-const CONFIG_FILE_OPTION = "utf-8";
+const IS_DEVELOPMENT: boolean = process.env.NODE_ENV !== "production";
+const RESOURCE_DIR_NAME: string = "build";
+const CONFIG_FILE_ENCODING = "utf-8";
 
 /**
  * 根据文件URL拼接文件实际路径
@@ -10,10 +11,7 @@ const CONFIG_FILE_OPTION = "utf-8";
  * @param pathToFile 配置文件的URL（从assets目录开始）
  */
 const getConfigPath = (pathToFile: string): string => {
-  if (IS_DEVELOPMENT) {
-    return path.join(".", "assets", pathToFile);
-  }
-  return path.join(".", pathToFile);
+  return IS_DEVELOPMENT ? path.join(".", RESOURCE_DIR_NAME, pathToFile) : path.join(".", pathToFile);
 };
 
 /**
@@ -23,7 +21,7 @@ const getConfigPath = (pathToFile: string): string => {
  */
 export const readFile = (pathToFile: string): Promise<JSON> => {
   return new Promise((resolve, reject) => {
-    fs.readFile(getConfigPath(pathToFile), CONFIG_FILE_OPTION, (error, data) => {
+    fs.readFile(getConfigPath(pathToFile), CONFIG_FILE_ENCODING, (error, data) => {
       if (error) {
         reject(error);
       } else {
@@ -41,7 +39,7 @@ export const readFile = (pathToFile: string): Promise<JSON> => {
  */
 export const writeFile = (fileContent: string, pathToFile: string): Promise<void> => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(getConfigPath(pathToFile), fileContent, error => {
+    fs.writeFile(getConfigPath(pathToFile), fileContent, CONFIG_FILE_ENCODING, error => {
       if (error) {
         reject(error);
       }
