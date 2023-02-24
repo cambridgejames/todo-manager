@@ -46,3 +46,21 @@ export const writeFile = (fileContent: string, pathToFile: string): Promise<void
     });
   });
 };
+
+/**
+ * 读取指定目录下的文件列表
+ *
+ * @param pathToDir 目录URL
+ * @param filter 过滤正则
+ */
+export const readDir = (pathToDir: string, filter = "(?:)"): Promise<Array<string>> => {
+  return new Promise<Array<string>>((resolve, reject) => {
+    fs.readdir(getConfigPath(pathToDir), (error, data: Array<string>) => {
+      if (error) {
+        reject(error);
+      }
+      const regex = new RegExp(filter);
+      resolve(data.filter(value => regex.test(value)));
+    });
+  });
+};

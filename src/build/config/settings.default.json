@@ -1,5 +1,6 @@
 {
   "common": {
-    "lang": "zh-cn"
+    "lang": "zh-cn",
+    "theme": "tm-dark"
   }
 }
