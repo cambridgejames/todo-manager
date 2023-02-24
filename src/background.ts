@@ -2,6 +2,7 @@ import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
 import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
+import { handleIpc } from "@/electron/ipc/IpcHandler";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -60,6 +61,7 @@ app.on("activate", async () => {
 });
 
 app.on("ready", async () => {
+  handleIpc();
   await createWindow();
 });
 

@@ -26,6 +26,7 @@ const ckEditorThemeData = {
  * 主题配置
  */
 const todoManagerThemeData = {
+  "tm-window-btn-color": "#8c8c8c",
   "tm-primary-hover": "#393b40",
   "tm-primary-border": "#43454a",
   "tm-close-hover": "#e81123",

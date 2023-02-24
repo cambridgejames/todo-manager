@@ -8,14 +8,18 @@
 
 <script lang="ts" setup>
 import { inject } from "vue";
-import { ThemeService } from "devui-theme";
+import { Theme, ThemeService } from "devui-theme";
 import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
 import { useI18n } from "vue-i18n";
 import { setConfigure } from "@/assets/ts/config/SettingsUtil";
+import { ipcRenderer } from "electron";
+import { IpcRenderChannel } from "@/assets/ts/interface/ipc/IpcRenderChannel";
 
 const themeService: ThemeService | null | undefined = inject("themeService");
 const changeTheme = (): void => {
-  themeService?.applyTheme(themeService?.currentTheme === toolManagerLightTheme ? toolManagerDarkTheme : toolManagerLightTheme);
+  const targetTheme: Theme = themeService?.currentTheme === toolManagerLightTheme ? toolManagerDarkTheme : toolManagerLightTheme;
+  themeService?.applyTheme(targetTheme);
+  ipcRenderer.invoke(IpcRenderChannel.CHANGE_THEME, targetTheme);
 };
 
 const { locale } = useI18n();
