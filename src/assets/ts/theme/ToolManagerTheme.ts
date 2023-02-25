@@ -1,9 +1,11 @@
-import { Theme, devuiLightTheme, devuiDarkTheme } from "devui-theme";
+import { Theme, devuiLightTheme, devuiDarkTheme, ThemeService } from "devui-theme";
 import { themeData as lightThemeData } from "./definition/ToolManagerLightTheme";
 import { themeData as darkThemeData } from "./definition/ToolManagerDarkTheme";
 import { readDir, readFile } from "@/assets/ts/adapter/file";
 import * as path from "path";
 import { AllThemeData, ThemeData } from "@/assets/ts/interface/theme/ThemeData";
+import { ipcRenderer } from "electron";
+import { IpcRenderChannel } from "@/assets/ts/interface/ipc/IpcRenderChannel";
 
 const THEME_DIR: string = "/theme";
 const THEME_FILE_NAME_SUFFIX: string = "json";
@@ -11,6 +13,7 @@ const THEME_FILE_NAME_DEFAULT: string = "default";
 const THEME_FILE_FILTER: string = `^(?!${THEME_FILE_NAME_DEFAULT}\\.${THEME_FILE_NAME_SUFFIX}).+\\.${THEME_FILE_NAME_SUFFIX}$`;
 
 const THEME_FILES: Array<string> = await readDir(THEME_DIR, THEME_FILE_FILTER);
+const DEFAULT_THEME_ID = "tm-dark";
 
 /**
  * 根据文件名读取主题配置文件数据
@@ -29,6 +32,21 @@ const nativeNameToId = (nativeName: string): string => nativeName.replace(/([A-Z
 // 驼峰命名转空格连接
 const nativeNameToName = (nativeName: string): string => nativeName.replace(/([A-Z])/g, " $1")
   .replace(/^./, (str: string): string => str.toUpperCase());
+
+/**
+ * 合并两个主题数据（以新的主题数据为准）
+ *
+ * @param defaultThemeData 默认主题数据
+ * @param currentThemeData 新的主题数据
+ */
+const mergeThemeData = (defaultThemeData: ThemeData, currentThemeData: ThemeData): ThemeData => {
+  return {
+    devui: Object.assign({}, defaultThemeData.devui, currentThemeData.devui),
+    editor: Object.assign({}, defaultThemeData.editor, currentThemeData.editor),
+    native: Object.assign({}, defaultThemeData.native, currentThemeData.native),
+    isDark: currentThemeData.isDark
+  } as ThemeData;
+};
 
 /**
  * 将主题配置文件转换成主题对象
@@ -62,16 +80,24 @@ const buildAllThemeDataMap = async (defaultThemeFileName: string, themeFileNames
   const themDataMap: AllThemeData = { themes: {} } as AllThemeData;
   for (const currentFileName of themeFileNames) {
     const currentFileContent: ThemeData = await getThemeData(currentFileName);
-    const currentThemeData: ThemeData = Object.assign({}, defaultThemeData, currentFileContent);
+    const currentThemeData: ThemeData = mergeThemeData(defaultThemeData, currentFileContent);
     const nativeThemeName: string = fileNameToNativeName(currentFileName);
     themDataMap.themes[nativeNameToId(nativeThemeName)] = buildDevUiTheme(nativeThemeName, currentThemeData);
   }
-  themDataMap.defaultThemeId = "tm-dark";
+  themDataMap.defaultThemeId = DEFAULT_THEME_ID;
   return themDataMap;
 };
 
 export const allThemData: AllThemeData
   = await buildAllThemeDataMap(`${THEME_FILE_NAME_DEFAULT}.${THEME_FILE_NAME_SUFFIX}`, THEME_FILES);
+
+export const changeTheme = (themeService: ThemeService | null | undefined, targetTheme: Theme | null | undefined): void => {
+  if (!themeService || !targetTheme || themeService.currentTheme.id === targetTheme.id) {
+    return;
+  }
+  themeService.applyTheme(targetTheme);
+  ipcRenderer.invoke(IpcRenderChannel.CHANGE_THEME, targetTheme).then(() => {});
+};
 
 /**
  * 定义亮色主题
