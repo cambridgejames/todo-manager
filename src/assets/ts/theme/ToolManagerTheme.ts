@@ -1,6 +1,4 @@
 import { Theme, devuiLightTheme, devuiDarkTheme, ThemeService } from "devui-theme";
-import { themeData as lightThemeData } from "./definition/ToolManagerLightTheme";
-import { themeData as darkThemeData } from "./definition/ToolManagerDarkTheme";
 import { readDir, readFile } from "@/assets/ts/adapter/file";
 import * as path from "path";
 import { AllThemeData, ThemeData } from "@/assets/ts/interface/theme/ThemeData";
@@ -91,6 +89,12 @@ const buildAllThemeDataMap = async (defaultThemeFileName: string, themeFileNames
 export const allThemData: AllThemeData
   = await buildAllThemeDataMap(`${THEME_FILE_NAME_DEFAULT}.${THEME_FILE_NAME_SUFFIX}`, THEME_FILES);
 
+/**
+ * 修改主题
+ *
+ * @param themeService 主题管理器
+ * @param targetTheme 目标主题
+ */
 export const changeTheme = (themeService: ThemeService | null | undefined, targetTheme: Theme | null | undefined): void => {
   if (!themeService || !targetTheme || themeService.currentTheme.id === targetTheme.id) {
     return;
@@ -98,25 +102,3 @@ export const changeTheme = (themeService: ThemeService | null | undefined, targe
   themeService.applyTheme(targetTheme);
   ipcRenderer.invoke(IpcRenderChannel.CHANGE_THEME, targetTheme).then(() => {});
 };
-
-/**
- * 定义亮色主题
- */
-export const toolManagerLightTheme: Theme = new Theme({
-  id: "ToolManagerLightTheme",
-  name: "Tool Manager Light",
-  cnName: "Tool Manager Light",
-  data: Object.assign({}, devuiLightTheme.data, lightThemeData),
-  isDark: false
-});
-
-/**
- * 定义暗色主题
- */
-export const toolManagerDarkTheme: Theme = new Theme({
-  id: "ToolManagerDarkTheme",
-  name: "Tool Manager Dark",
-  cnName: "Tool Manager Dark",
-  data: Object.assign({}, devuiDarkTheme.data, darkThemeData),
-  isDark: true
-});
