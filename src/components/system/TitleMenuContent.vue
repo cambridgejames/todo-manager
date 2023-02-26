@@ -2,8 +2,8 @@
   <div ref="titleMenuContent" id="title-menu-content" class="title-menu-content">
     <div class="title-icon"/>
     <div style="width: max-content;"></div>
-    <div data-tauri-drag-region style="width: 100%;"></div>
-    <div style="width: 141px; flex-shrink: 0; display: flex; flex-direction: row;">
+    <div data-tauri-drag-region class="title-draggable">{{ title }}</div>
+    <div v-if="false" style="width: 141px; flex-shrink: 0; display: flex; flex-direction: row;">
       <div class="system-button minimize">
         <div class="inner-icon"></div>
       </div>
@@ -21,12 +21,14 @@
 import { ref } from "vue";
 
 const isMaximizedVal = ref<Boolean>(false);
+const title = ref("ElectronTodo");
 </script>
 
 <style lang="scss" scoped>
 .title-menu-content {
   width: 100%;
-  height: 100%;
+  height: var(--tm-header-height);
+  min-height: var(--tm-header-height);
   user-select: none;
   -webkit-user-select: none;
   display: flex;
@@ -39,6 +41,14 @@ const isMaximizedVal = ref<Boolean>(false);
     background-image: url("@/assets/img/icon.png");
     background-position: center;
     background-repeat: no-repeat;
+  }
+
+  .title-draggable {
+    width: 100%;
+    -webkit-app-region: drag;
+    user-select: none;
+    text-align: center;
+    line-height: var(--tm-header-height);
   }
 
   .system-button {

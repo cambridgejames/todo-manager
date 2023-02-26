@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-function": "off",
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "node/no-callback-literal": 0,
@@ -30,7 +31,8 @@ module.exports = {
     semi: ["error", "always"],
     "no-empty": "error",
     "no-unused-vars": "off",
-    "operator-linebreak": ["error", "before"]
+    "operator-linebreak": ["error", "before"],
+    "@typescript-eslint/no-var-requires": 0
   },
   overrides: [
     {

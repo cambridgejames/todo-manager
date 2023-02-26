@@ -1,8 +1,12 @@
 {
-  "productName": "Photodon",
+  "productName": "ElectronTodo",
+  "icon": "public/icon/icon.icon",
   "directories": {
     "output": "dist_electron"
   },
+  "extraResources": [
+    { "from": "./build", "to": "../" }
+  ],
   "mac": {
     "icon": "public/icon/icon.icns",
     "artifactName": "${productName}_${version}_setup.${ext}"

@@ -1,10 +1,10 @@
 <template>
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
-      <d-header v-if="false" data-tauri-drag-region class="navigation-header">
+      <d-header data-tauri-drag-region v-if="showTitle" class="navigation-header">
         <title-menu-content/>
       </d-header>
-      <d-layout class="navigation-box">
+      <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle }]">
         <d-aside class="navigation-left-aside">
           <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
         </d-aside>
@@ -20,6 +20,13 @@
 import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
 import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
 import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
+import { ipcRenderer } from "electron";
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { ref } from "vue";
+
+const showTitle = ref<boolean>(true);
+ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, () => { showTitle.value = false; });
+ipcRenderer.on(IpcMainChannel.LEAVE_FULL_SCREEN, () => { showTitle.value = true; });
 </script>
 
 <style scoped lang="scss">
@@ -30,13 +37,25 @@ import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
   height: 100%;
   background-color: var(--devui-global-bg-normal);
 
+  &.navigation-document-content {
+    height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    &.show-title {
+      height: calc(100% - var(--tm-header-height));
+    }
+  }
+
   .navigation-header {
-    height: var(--tm-header-height);
-    min-height: var(--tm-header-height);
     flex-shrink: 0;
     flex-grow: 0;
     background-color: var(--devui-global-bg);
     border-bottom: 1px solid var(--devui-global-bg-normal);
+
+    &.devui-layout__header {
+      min-height: 0;
+    }
   }
 
   .navigation-left-aside {

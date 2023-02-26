@@ -131,7 +131,7 @@ $tm-split-direction-var: var(--tm-split-direction, row);
       align-items: center;
       flex-grow: 0;
       flex-shrink: 0;
-      border: 1px solid var(--devui-global-bg);
+      border-left: 1px solid var(--tm-primary-hover);
 
       &:hover, &.dragging {
         border-color: var(--devui-primary);
@@ -141,6 +141,7 @@ $tm-split-direction-var: var(--tm-split-direction, row);
         content: " ";
         display: block;
         position: absolute;
+        z-index: 200;
       }
     }
 

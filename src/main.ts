@@ -11,7 +11,7 @@ import DevUI from "vue-devui";
 import "vue-devui/style.css";
 import "@devui-design/icons/icomoon/devui-icon.css";
 import { ThemeService, ThemeServiceInit } from "devui-theme";
-import { toolManagerLightTheme, toolManagerDarkTheme } from "@/assets/ts/theme/ToolManagerTheme";
+import { allThemData, changeTheme } from "@/assets/ts/theme/ToolManagerTheme";
 
 // 富文本编辑器
 import CKEditor from "@ckeditor/ckeditor5-vue";
@@ -20,12 +20,9 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import "./assets/css/index.css";
 
 // 配置主题
-const themeService: ThemeService | null = ThemeServiceInit({
-  ToolManagerLightTheme: toolManagerLightTheme,
-  ToolManagerDarkTheme: toolManagerDarkTheme
-}, "ToolManagerLightTheme");
-themeService?.applyTheme(toolManagerDarkTheme);
+const themeService: ThemeService | null = ThemeServiceInit(allThemData.themes, allThemData.defaultThemeId);
+changeTheme(themeService, allThemData.themes[allThemData.defaultThemeId]);
 
 const app = createApp(App);
-app.provide("themeService", themeService);
+app.provide("themeService", themeService).provide("allThemeData", allThemData);
 app.use(i18n).use(DevUI).use(CKEditor).use(router).mount("#app");

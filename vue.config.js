@@ -23,13 +23,14 @@ module.exports = defineConfig({
   chainWebpack: config => {
     config.resolve.alias.set("@", resolve("src"));
     config.plugin("html").tap(args => {
-      args[0].title = "Photodon";
+      args[0].title = "ElectricTodo";
       return args;
     });
   },
   pluginOptions: {
     electronBuilder: {
-      customFileProtocol: "./"
+      customFileProtocol: "./",
+      nodeIntegration: true
     }
   }
 });

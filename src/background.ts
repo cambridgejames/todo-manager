@@ -1,75 +1,74 @@
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import * as path from "path";
-
-const isDevelopment = process.env.NODE_ENV !== "production";
+import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
+import { handleIpc } from "@/electron/ipc/IpcHandler";
+import { configureEvent } from "@/electron/ConfiguerEvent";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
 ]);
+let rollbackFunc: RollbackFunc | null = null;
 
 async function createWindow() {
-  const win = new BrowserWindow({
-    width: 800,
+  rollbackFunc = await getRollbackFunc();
+  const mainBrowserWindow = new BrowserWindow({
+    width: 900,
     height: 600,
-    title: "Photodon",
+    title: "ElectricTodo",
+    titleBarStyle: "hidden",
+    backgroundColor: "#2b2d30",
+    titleBarOverlay: {
+      color: "#2b2d30",
+      symbolColor: "#8c8c8c",
+      height: 40
+    },
     icon: path.join(__dirname, "../public/icon/icon.ico"), // Windows图标
     webPreferences: {
-      enableRemoteModule: !!process.env.IS_TEST,
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
   if (process.platform === "darwin") {
     app.dock.setIcon(path.join(__dirname, "../public/icon/icon.icns"));
   }
+  configureEvent(mainBrowserWindow);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+    await mainBrowserWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     if (!process.env.IS_TEST) {
-      win.webContents.openDevTools();
+      mainBrowserWindow.webContents.openDevTools();
     }
   } else {
     createProtocol("app");
-    await win.loadURL("app://./index.html");
+    await mainBrowserWindow.loadURL("app://./index.html");
   }
 }
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-  // On macOS, it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+  if (rollbackFunc) {
+    rollbackFunc(); // 回滚配置文件
+  }
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
 app.on("activate", async () => {
-  // On macOS, it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     await createWindow();
   }
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    try {
-      await installExtension(VUEJS3_DEVTOOLS);
-    } catch (e) {
-      console.error("Vue Devtools failed to install:", e.toString());
-    }
-  }
+  handleIpc();
   await createWindow();
 });
 
 // Exit cleanly on request from parent process in development mode.
+const isDevelopment = process.env.NODE_ENV !== "production";
 if (isDevelopment) {
   if (process.platform === "win32") {
     process.on("message", (data) => {
@@ -82,4 +81,6 @@ if (isDevelopment) {
       app.quit();
     });
   }
+} else {
+  Menu.setApplicationMenu(null);
 }
