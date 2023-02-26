@@ -3,6 +3,7 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
 import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 import { handleIpc } from "@/electron/ipc/IpcHandler";
+import { configureEvent } from "@/electron/ConfiguerEvent";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,7 +13,7 @@ let rollbackFunc: RollbackFunc | null = null;
 
 async function createWindow() {
   rollbackFunc = await getRollbackFunc();
-  const win = new BrowserWindow({
+  const mainBrowserWindow = new BrowserWindow({
     width: 900,
     height: 600,
     title: "ElectricTodo",
@@ -32,15 +33,16 @@ async function createWindow() {
   if (process.platform === "darwin") {
     app.dock.setIcon(path.join(__dirname, "../public/icon/icon.icns"));
   }
+  configureEvent(mainBrowserWindow);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+    await mainBrowserWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
     if (!process.env.IS_TEST) {
-      win.webContents.openDevTools();
+      mainBrowserWindow.webContents.openDevTools();
     }
   } else {
     createProtocol("app");
-    await win.loadURL("app://./index.html");
+    await mainBrowserWindow.loadURL("app://./index.html");
   }
 }
 

@@ -1,0 +1,12 @@
+import { BrowserWindow } from "electron";
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+
+export const onFullScreen = (mainWindow: BrowserWindow, eventName: string) => {
+  console.log(eventName);
+  mainWindow.webContents.send(IpcMainChannel.ENTER_FULL_SCREEN);
+};
+
+export const onLeaveFullScreen = (mainWindow: BrowserWindow, eventName: string) => {
+  console.log(eventName);
+  mainWindow.webContents.send(IpcMainChannel.LEAVE_FULL_SCREEN);
+};
