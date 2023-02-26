@@ -25,7 +25,7 @@ import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { ref } from "vue";
 
 const showTitle = ref<boolean>(true);
-ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, () => { console.log(123); showTitle.value = false; });
+ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, () => { showTitle.value = false; });
 ipcRenderer.on(IpcMainChannel.LEAVE_FULL_SCREEN, () => { showTitle.value = true; });
 </script>
 
