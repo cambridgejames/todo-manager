@@ -4,9 +4,14 @@
     "devui-global-bg-normal": "#ffffff",
     "devui-icon-fill": "#6c707e",
     "devui-icon-fill-active": "#ffffff",
+    "devui-form-control-bg": "#ffffff",
+    "devui-form-control-line-active": "#3573f0",
+    "devui-brand": "#3573f0",
     "devui-primary": "#3573f0",
     "devui-primary-hover": "#769dee",
     "devui-primary-active": "#5689ee",
+    "devui-list-item-active-bg": "#3573f0",
+    "devui-list-item-active-text": "#252b3a",
     "devui-text": "#252b3a"
   },
   "editor": {

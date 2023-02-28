@@ -1,7 +1,11 @@
 <template>
   <div id="date-box" class="date-box">
     <div class="date-function-container">
-      <d-date-picker-pro v-model="selectedMonth" type="month" />
+      <div class="date-function-title">
+        <span class="date-gregorian-calendar">{{ "00:00:00" }}</span>
+        <span class="date-lunar-calendar">{{ "2023年03月01日 癸卯年二月初十" }}</span>
+      </div>
+      <d-date-picker-pro class="date-function-selector" v-model="selectedMonth" type="month" />
     </div>
     <div class="date-table-view-container">
       <DateTableView/>
@@ -17,7 +21,8 @@ const selectedMonth = ref<string>("");
 </script>
 
 <style lang="scss" scoped>
-$function-container-height: 50px;
+$function-container-height: 32px;
+$function-container-width: 300px;
 
 .date-box {
   width: 100%;
@@ -26,6 +31,7 @@ $function-container-height: 50px;
   padding: var(--tm-article-padding);
   flex-direction: column;
   justify-content: space-between;
+  user-select: none;
 
   .date-function-container, .date-table-view-container {
     flex-shrink: 0;
@@ -34,6 +40,40 @@ $function-container-height: 50px;
 
   .date-function-container {
     height: $function-container-height;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .date-function-title {
+      width: calc(100% - $function-container-width - 10px);
+      flex-grow: 0;
+      display: flex;
+      overflow: hidden;
+      flex-direction: row;
+      align-items: flex-end;
+      vertical-align: bottom;
+
+      .date-gregorian-calendar {
+        width: 140px;
+        font-size: 32px;
+        line-height: $function-container-height;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+
+      .date-lunar-calendar {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .date-function-selector {
+      width: $function-container-width;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
   }
 
   .date-table-view-container {
