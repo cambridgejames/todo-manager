@@ -3,5 +3,6 @@
  */
 export enum IpcMainChannel{
   ENTER_FULL_SCREEN = "enterFullScreen",
-  LEAVE_FULL_SCREEN = "leaveFullScreen"
+  LEAVE_FULL_SCREEN = "leaveFullScreen",
+  TIMER_SECOND = "secondTimer"
 }

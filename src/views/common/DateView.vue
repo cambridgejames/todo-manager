@@ -2,8 +2,8 @@
   <div id="date-box" class="date-box">
     <div class="date-function-container">
       <div class="date-function-title">
-        <span class="date-gregorian-calendar">{{ "00:00:00" }}</span>
-        <span class="date-lunar-calendar">{{ "2023年03月01日 癸卯年二月初十" }}</span>
+        <span class="date-gregorian-calendar">{{ currentTime }}</span>
+        <span class="date-lunar-calendar">{{ "2023年03月01日 星期三 癸卯年二月初十" }}</span>
       </div>
       <d-date-picker-pro class="date-function-selector" v-model="selectedMonth" type="month" />
     </div>
@@ -14,10 +14,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import DateTableView from "@/components/ui/dateTableView";
+import { ipcRenderer, IpcRendererEvent } from "electron";
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
 
+const currentTime = ref<string>("");
 const selectedMonth = ref<string>("");
+
+const refreshTime = (timestamp: number): void => { currentTime.value = formatTime("HH:MM:ss", new Date(timestamp)); };
+
+const timerConsumer = (event: IpcRendererEvent, timestamp: number): void => {
+  refreshTime(timestamp);
+};
+
+onMounted(() => {
+  refreshTime(Date.now());
+  ipcRenderer.on(IpcMainChannel.TIMER_SECOND, timerConsumer);
+});
+
+onUnmounted(() => {
+  ipcRenderer.removeListener(IpcMainChannel.TIMER_SECOND, timerConsumer);
+});
 </script>
 
 <style lang="scss" scoped>
