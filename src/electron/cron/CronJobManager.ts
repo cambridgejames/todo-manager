@@ -1,9 +1,12 @@
 import nodeCron from "node-cron";
 import { BrowserWindow } from "electron";
-import { onSecondTimer } from "@/electron/ipc/IpcProvider";
+import { onSecondlyTimer, onDailyTimer } from "@/electron/ipc/IpcProvider";
 
 export const initCronJob = (mainWindow: BrowserWindow) => {
   nodeCron.schedule("* * * * * *", () => {
-    onSecondTimer(mainWindow);
+    onSecondlyTimer(mainWindow);
+  });
+  nodeCron.schedule("0 0 0 * * *", () => {
+    onDailyTimer(mainWindow);
   });
 };

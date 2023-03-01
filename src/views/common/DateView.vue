@@ -3,7 +3,7 @@
     <div class="date-function-container">
       <div class="date-function-title">
         <span class="date-gregorian-calendar">{{ currentTime }}</span>
-        <span class="date-lunar-calendar">{{ "2023年03月01日 星期三 癸卯年二月初十" }}</span>
+        <span class="date-lunar-calendar">{{ currentDate }}</span>
       </div>
       <d-date-picker-pro class="date-function-selector" v-model="selectedMonth" type="month" />
     </div>
@@ -14,28 +14,47 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { getCurrentInstance, onMounted, onUnmounted, ref } from "vue";
 import DateTableView from "@/components/ui/dateTableView";
 import { ipcRenderer, IpcRendererEvent } from "electron";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
 
+const vueApp = getCurrentInstance()?.appContext.config.globalProperties;
+
 const currentTime = ref<string>("");
+const currentDate = ref<string>("");
 const selectedMonth = ref<string>("");
 
-const refreshTime = (timestamp: number): void => { currentTime.value = formatTime("HH:MM:ss", new Date(timestamp)); };
+const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+const refreshTime = (date: Date): void => { currentTime.value = formatTime("HH:mm:ss", date); };
+const refreshDate = (date: Date): void => {
+  const year = formatTime("yyyy年MM月dd日", date);
+  const day = `common.day.${titleContent[date.getDay() === 7 ? 0 : date.getDay()]}`;
+  currentDate.value = `${year}\u2003${vueApp?.$t(day)}\u2003癸卯年二月初十`;
+};
 
 const timerConsumer = (event: IpcRendererEvent, timestamp: number): void => {
-  refreshTime(timestamp);
+  const date: Date = new Date(timestamp);
+  refreshTime(date);
+};
+
+const dateConsumer = (event: IpcRendererEvent, timestamp: number): void => {
+  const date: Date = new Date(timestamp);
+  refreshDate(date);
 };
 
 onMounted(() => {
-  refreshTime(Date.now());
+  const date: Date = new Date();
+  refreshTime(date);
+  refreshDate(date);
   ipcRenderer.on(IpcMainChannel.TIMER_SECOND, timerConsumer);
+  ipcRenderer.on(IpcMainChannel.TIMER_SECOND, dateConsumer);
 });
 
 onUnmounted(() => {
   ipcRenderer.removeListener(IpcMainChannel.TIMER_SECOND, timerConsumer);
+  ipcRenderer.removeListener(IpcMainChannel.TIMER_SECOND, dateConsumer);
 });
 </script>
 
