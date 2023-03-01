@@ -17,5 +17,8 @@ export default {
     day: "日程",
     date: "月历",
     settings: "设置"
+  },
+  dateView: {
+    dateTemplate: "{year}年{month}月{date}日\u2003{day}\u2003{lunar}"
   }
 };

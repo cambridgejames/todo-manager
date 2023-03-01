@@ -19,6 +19,7 @@ import DateTableView from "@/components/ui/dateTableView";
 import { ipcRenderer, IpcRendererEvent } from "electron";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
+import { getLunar } from "chinese-lunar-calendar";
 
 const vueApp = getCurrentInstance()?.appContext.config.globalProperties;
 
@@ -29,9 +30,14 @@ const selectedMonth = ref<string>("");
 const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const refreshTime = (date: Date): void => { currentTime.value = formatTime("HH:mm:ss", date); };
 const refreshDate = (date: Date): void => {
-  const year = formatTime("yyyy年MM月dd日", date);
-  const day = `common.day.${titleContent[date.getDay() === 7 ? 0 : date.getDay()]}`;
-  currentDate.value = `${year}\u2003${vueApp?.$t(day)}\u2003癸卯年二月初十`;
+  const lunar = getLunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  currentDate.value = String(vueApp?.$t("dateView.dateTemplate", {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    date: date.getDate(),
+    day: vueApp?.$t(`common.day.${titleContent[date.getDay() === 7 ? 0 : date.getDay()]}`),
+    lunar: `${lunar.lunarYear}${lunar.dateStr}`
+  }));
 };
 
 const timerConsumer = (event: IpcRendererEvent, timestamp: number): void => {
@@ -49,12 +55,12 @@ onMounted(() => {
   refreshTime(date);
   refreshDate(date);
   ipcRenderer.on(IpcMainChannel.TIMER_SECOND, timerConsumer);
-  ipcRenderer.on(IpcMainChannel.TIMER_SECOND, dateConsumer);
+  ipcRenderer.on(IpcMainChannel.TIMER_DAY, dateConsumer);
 });
 
 onUnmounted(() => {
   ipcRenderer.removeListener(IpcMainChannel.TIMER_SECOND, timerConsumer);
-  ipcRenderer.removeListener(IpcMainChannel.TIMER_SECOND, dateConsumer);
+  ipcRenderer.removeListener(IpcMainChannel.TIMER_DAY, dateConsumer);
 });
 </script>
 

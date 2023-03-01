@@ -17,5 +17,8 @@ export default {
     day: "Schedule",
     date: "Calendar",
     settings: "Settings"
+  },
+  dateView: {
+    dateTemplate: "{day}, {month} {date}, {year}"
   }
 };
