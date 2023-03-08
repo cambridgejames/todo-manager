@@ -20,6 +20,7 @@ import { ipcRenderer, IpcRendererEvent } from "electron";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
 import { getLunar } from "chinese-lunar-calendar";
+import { number } from "@intlify/core-base";
 
 const vueApp = getCurrentInstance()?.appContext.config.globalProperties;
 
