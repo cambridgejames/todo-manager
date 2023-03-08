@@ -1,5 +1,6 @@
 export default {
   common: {
+    title: "Time Manager",
     day: {
       monday: "Monday",
       tuesday: "Tuesday",
@@ -13,7 +14,11 @@ export default {
   sideBar: {
     home: "Home",
     todo: "Todo List",
-    date: "Schedule",
+    day: "Schedule",
+    date: "Calendar",
     settings: "Settings"
+  },
+  dateView: {
+    dateTemplate: "{day}, {month} {date}, {year}"
   }
 };

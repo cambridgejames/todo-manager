@@ -1,5 +1,6 @@
 export default {
   common: {
+    title: "时间管理大师",
     day: {
       monday: "星期一",
       tuesday: "星期二",
@@ -13,7 +14,11 @@ export default {
   sideBar: {
     home: "主页",
     todo: "代办",
-    date: "日程",
+    day: "日程",
+    date: "月历",
     settings: "设置"
+  },
+  dateView: {
+    dateTemplate: "{year}年{month}月{date}日\u2003{day}\u2003{lunar}"
   }
 };

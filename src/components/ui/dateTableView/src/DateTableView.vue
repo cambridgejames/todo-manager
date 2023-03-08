@@ -7,9 +7,9 @@
     </div>
     <transition-group ref="dateTableViewRef" :class="['date-table-view-main-box', { 'wheel-up': isWheelUp }]"
                       name="slide" tag="div" @wheel.prevent.stop="onWheel">
-      <div v-for="itemRow in tableContent" class="day-box-row" :key="`${itemRow.rowNumber}`">
+      <div v-for="itemRow in tableContent.dateContent" class="day-box-row" :key="`${itemRow.rowNumber}`">
         <div v-for="itemCol in itemRow.rowContent" class="day-box" :key="`${itemRow.rowNumber}-${itemCol.colNumber}`">
-          {{ itemCol.date }}
+          {{ itemCol.date.date }}
         </div>
       </div>
     </transition-group>
@@ -18,11 +18,11 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { DateViewRow } from "./type";
+import { DateViewData } from "./type";
 import { initTableContent, wheelDown, wheelUp } from "@/components/ui/dateTableView/src/TableContentManager";
 
 const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-const tableContent = ref<Array<DateViewRow>>(initTableContent());
+const tableContent = ref<DateViewData>(initTableContent());
 const isWheelUp = ref<boolean>(false);
 
 const onWheel = (event: WheelEvent): void => {

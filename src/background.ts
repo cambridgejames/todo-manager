@@ -5,6 +5,8 @@ import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 import { handleIpc } from "@/electron/ipc/IpcHandler";
 import { configureEvent } from "@/electron/ConfiguerEvent";
 
+import { initCronJob } from "./electron/cron/CronJobManager";
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } }
@@ -34,6 +36,7 @@ async function createWindow() {
     app.dock.setIcon(path.join(__dirname, "../public/icon/icon.icns"));
   }
   configureEvent(mainBrowserWindow);
+  initCronJob(mainBrowserWindow);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     await mainBrowserWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
