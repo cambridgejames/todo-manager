@@ -1,12 +1,17 @@
-import nodeCron from "node-cron";
+import * as cron from "cron";
 import { BrowserWindow } from "electron";
 import { onSecondlyTimer, onDailyTimer } from "@/electron/ipc/IpcProvider";
 
 export const initCronJob = (mainWindow: BrowserWindow) => {
-  nodeCron.schedule("* * * * * *", () => {
+  // 初始化秒级事件触发器
+  const secondlyTimerJob = new cron.CronJob("* * * * * *", () => {
     onSecondlyTimer(mainWindow);
-  });
-  nodeCron.schedule("0 0 0 * * *", () => {
+  }, null, true);
+  secondlyTimerJob.start();
+
+  // 初始化天级事件触发器
+  const dailyTimerJob = new cron.CronJob("0 0 0 * * *", () => {
     onDailyTimer(mainWindow);
   });
+  dailyTimerJob.start();
 };
