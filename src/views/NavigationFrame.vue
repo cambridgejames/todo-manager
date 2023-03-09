@@ -1,7 +1,7 @@
 <template>
   <div id="navigation-box" class="navigation-box">
     <d-layout class="navigation-box">
-      <d-header data-tauri-drag-region v-if="showTitle" class="navigation-header">
+      <d-header data-tauri-drag-region v-if="showTitle && !isLinux" class="navigation-header">
         <title-menu-content/>
       </d-header>
       <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle }]">
@@ -25,6 +25,7 @@ import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { ref } from "vue";
 
 const showTitle = ref<boolean>(true);
+const isLinux = process.platform === "linux";
 ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, () => { showTitle.value = false; });
 ipcRenderer.on(IpcMainChannel.LEAVE_FULL_SCREEN, () => { showTitle.value = true; });
 </script>
