@@ -1,9 +1,11 @@
 import { app, protocol, BrowserWindow, Menu } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import * as path from "path";
+
 import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 import { handleIpc } from "@/electron/ipc/IpcHandler";
 import { configureEvent } from "@/electron/ConfiguerEvent";
+import {configureGlobalShortcut} from "@/electron/ConfigureGlobalShortcut";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -12,6 +14,7 @@ protocol.registerSchemesAsPrivileged([
 let rollbackFunc: RollbackFunc | null = null;
 
 async function createWindow() {
+  Menu.setApplicationMenu(null);
   rollbackFunc = await getRollbackFunc();
   const mainBrowserWindow = new BrowserWindow({
     width: 900,
@@ -34,6 +37,7 @@ async function createWindow() {
     app.dock.setIcon(path.join(__dirname, "../public/icon/icon.icns"));
   }
   configureEvent(mainBrowserWindow);
+  configureGlobalShortcut();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     await mainBrowserWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -81,6 +85,4 @@ if (isDevelopment) {
       app.quit();
     });
   }
-} else {
-  Menu.setApplicationMenu(null);
 }
