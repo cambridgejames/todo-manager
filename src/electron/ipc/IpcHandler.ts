@@ -5,6 +5,7 @@ import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 
 import { Theme } from "devui-theme";
 
+// eslint-disable-next-line
 type IpcHandleFunc = (event: IpcMainInvokeEvent, ...args: any[]) => (Promise<void>) | (any);
 
 const IPC_HANDLER_MAP = new Map<IpcRenderChannel, IpcHandleFunc>();
