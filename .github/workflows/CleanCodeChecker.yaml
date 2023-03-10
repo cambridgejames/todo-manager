@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master, develop ]
 
-job:
+jobs:
   Check-clean-code:
     name: Check clean code
     runs-on: ubuntu-latest
