@@ -17,12 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
-import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
-import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
-import { ipcRenderer } from "electron";
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { ref } from "vue";
+import { ipcRenderer } from "electron";
+
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
+import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
+import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
 
 const showTitle = ref<boolean>(true);
 const isLinux = process.platform === "linux";
