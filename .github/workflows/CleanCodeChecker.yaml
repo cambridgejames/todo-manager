@@ -1,0 +1,33 @@
+name: Clean Code Checker
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+job:
+  Check-clean-code:
+    name: Check clean code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.15.x
+          cache: npm
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: ESLint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test:unit
