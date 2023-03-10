@@ -4,7 +4,7 @@
       <d-header data-tauri-drag-region v-if="showTitle && !isLinux" class="navigation-header">
         <title-menu-content/>
       </d-header>
-      <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle }]">
+      <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle && !isLinux }]">
         <d-aside class="navigation-left-aside">
           <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
         </d-aside>
@@ -17,12 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
-import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
-import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
-import { ipcRenderer } from "electron";
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { ref } from "vue";
+import { ipcRenderer } from "electron";
+
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
+import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
+import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
 
 const showTitle = ref<boolean>(true);
 const isLinux = process.platform === "linux";
