@@ -4,7 +4,7 @@
       <d-header data-tauri-drag-region v-if="showTitle && !isLinux" class="navigation-header">
         <title-menu-content/>
       </d-header>
-      <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle }]">
+      <d-layout :class="['navigation-box', 'navigation-document-content', { 'show-title': showTitle && !isLinux }]">
         <d-aside class="navigation-left-aside">
           <navigate-tab :top-btn="topBtnList" :bottom-btn="bottomBtnList"/>
         </d-aside>

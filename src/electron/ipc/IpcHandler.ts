@@ -14,10 +14,12 @@ IPC_HANDLER_MAP.set(IpcRenderChannel.CHANGE_THEME, (event, targetTheme: Theme) =
   const mainWindows: Array<BrowserWindow> = BrowserWindow.getAllWindows();
   for (const currentWindow of mainWindows) {
     currentWindow.setBackgroundColor(themeData["devui-global-bg-normal"]);
-    currentWindow.setTitleBarOverlay({
-      color: themeData["devui-global-bg"],
-      symbolColor: themeData["tm-window-btn-color"]
-    });
+    if (!!currentWindow.setTitleBarOverlay) {
+      currentWindow.setTitleBarOverlay({
+        color: themeData["devui-global-bg"],
+        symbolColor: themeData["tm-window-btn-color"]
+      });
+    }
   }
 });
 
