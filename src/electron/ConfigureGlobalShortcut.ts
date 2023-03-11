@@ -1,4 +1,4 @@
-import {BrowserWindow, globalShortcut} from "electron";
+import { BrowserWindow, globalShortcut } from "electron";
 
 export const configureGlobalShortcut = (): void => {
   /**
@@ -40,4 +40,4 @@ export const configureGlobalShortcut = (): void => {
       focusedWindow.webContents.openDevTools();
     }
   });
-}
+};
