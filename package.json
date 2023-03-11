@@ -21,6 +21,8 @@
     "chinese-lunar-calendar": "^1.0.1",
     "core-js": "^3.8.3",
     "cron": "^2.2.0",
+    "date-fns": "^2.29.3",
+    "date-fns-tz": "^2.0.0",
     "devui-theme": "^0.0.4",
     "jsonpath": "^1.1.1",
     "path": "^0.12.7",

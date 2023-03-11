@@ -6,14 +6,9 @@ export interface Date {
   isToday: boolean
 }
 
-export interface DateViewItem {
-  colNumber: number,
-  date: Date
-}
-
 export interface DateViewRow {
   rowNumber: number,
-  rowContent: Array<DateViewItem>
+  rowContent: Array<Date>
 }
 
 export interface DateViewData {

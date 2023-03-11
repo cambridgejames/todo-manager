@@ -7,9 +7,10 @@
     </div>
     <transition-group ref="dateTableViewRef" :class="['date-table-view-main-box', { 'wheel-up': isWheelUp }]"
                       name="slide" tag="div" @wheel.prevent.stop="onWheel">
-      <div v-for="itemRow in tableContent.dateContent" class="day-box-row" :key="`${itemRow.rowNumber}`">
-        <div v-for="itemCol in itemRow.rowContent" class="day-box" :key="`${itemRow.rowNumber}-${itemCol.colNumber}`">
-          {{ itemCol.date.date }}
+      <div v-for="itemRow in tableContent.dateContent" :key="`${itemRow.rowNumber}`" class="day-box-row">
+        <div v-for="(itemCol, index) in itemRow.rowContent" :key="`${itemRow.rowNumber}-${index}`"
+             :class="['day-box', { 'today': itemCol.isToday }]">
+          <span>{{ itemCol.date }}</span>
         </div>
       </div>
     </transition-group>
@@ -81,9 +82,12 @@ $title-box-height: 30px;
         padding: 5px;
         border-radius: calc(var(--tm-article-padding) / 2);
         background-color: var(--devui-global-bg);
-        text-align: right;
         cursor: pointer;
         transition: background-color .2s ease-in-out;
+
+        &.today {
+          border: 1px solid var(--devui-primary);
+        }
 
         &:hover {
           background-color: var(--tm-primary-hover);
