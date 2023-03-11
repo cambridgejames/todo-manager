@@ -1,13 +1,24 @@
-/**
- * 侧边栏Tips
- */
-const sideBar = {
-  home: "Home",
-  todo: "Todo List",
-  date: "Schedule",
-  settings: "Settings"
-};
-
 export default {
-  sideBar
+  common: {
+    title: "Time Manager",
+    day: {
+      monday: "Monday",
+      tuesday: "Tuesday",
+      wednesday: "Wednesday",
+      thursday: "Thursday",
+      friday: "Friday",
+      saturday: "Saturday",
+      sunday: "Sunday"
+    }
+  },
+  sideBar: {
+    home: "Home",
+    todo: "Todo List",
+    day: "Schedule",
+    date: "Calendar",
+    settings: "Settings"
+  },
+  dateView: {
+    dateTemplate: "{day}, {month} {date}, {year}"
+  }
 };

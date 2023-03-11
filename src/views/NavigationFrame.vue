@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { ipcRenderer } from "electron";
 
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
@@ -27,8 +27,18 @@ import TitleMenuContent from "@/components/system/TitleMenuContent.vue";
 
 const showTitle = ref<boolean>(true);
 const isLinux = process.platform === "linux";
-ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, () => { showTitle.value = false; });
-ipcRenderer.on(IpcMainChannel.LEAVE_FULL_SCREEN, () => { showTitle.value = true; });
+const enterFillScreenFunc = () => { showTitle.value = false; };
+const leaveFillScreenFunc = () => { showTitle.value = true; };
+
+onMounted(() => {
+  ipcRenderer.on(IpcMainChannel.ENTER_FULL_SCREEN, enterFillScreenFunc);
+  ipcRenderer.on(IpcMainChannel.LEAVE_FULL_SCREEN, leaveFillScreenFunc);
+});
+
+onUnmounted(() => {
+  ipcRenderer.removeListener(IpcMainChannel.ENTER_FULL_SCREEN, enterFillScreenFunc);
+  ipcRenderer.removeListener(IpcMainChannel.LEAVE_FULL_SCREEN, leaveFillScreenFunc);
+});
 </script>
 
 <style scoped lang="scss">

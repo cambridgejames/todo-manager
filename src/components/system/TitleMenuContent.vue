@@ -2,7 +2,7 @@
   <div ref="titleMenuContent" id="title-menu-content" class="title-menu-content">
     <div class="title-icon"/>
     <div style="width: max-content;"></div>
-    <div data-tauri-drag-region class="title-draggable">{{ title }}</div>
+    <div data-tauri-drag-region class="title-draggable">ElectronTodo - {{ $t("common.title") }}</div>
     <div v-if="false" style="width: 141px; flex-shrink: 0; display: flex; flex-direction: row;">
       <div class="system-button minimize">
         <div class="inner-icon"></div>
@@ -21,7 +21,6 @@
 import { ref } from "vue";
 
 const isMaximizedVal = ref<Boolean>(false);
-const title = ref("ElectronTodo");
 </script>
 
 <style lang="scss" scoped>

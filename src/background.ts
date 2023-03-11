@@ -5,7 +5,8 @@ import * as path from "path";
 import { getRollbackFunc, RollbackFunc } from "@/electron/ConfigureRoleback";
 import { handleIpc } from "@/electron/ipc/IpcHandler";
 import { configureEvent } from "@/electron/ConfiguerEvent";
-import {configureGlobalShortcut} from "@/electron/ConfigureGlobalShortcut";
+import { configureGlobalShortcut } from "@/electron/ConfigureGlobalShortcut";
+import { initCronJob } from "./electron/cron/CronJobManager";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -38,6 +39,7 @@ async function createWindow() {
   }
   configureEvent(mainBrowserWindow);
   configureGlobalShortcut();
+  initCronJob(mainBrowserWindow);
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     await mainBrowserWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
