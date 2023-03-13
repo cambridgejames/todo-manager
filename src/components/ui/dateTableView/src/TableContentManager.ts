@@ -1,18 +1,8 @@
-import { addMonths, getDaysInMonth, subMonths } from "date-fns";
+import { addDays, addMonths, getDaysInMonth, subDays, subMonths } from "date-fns";
 import { Date as TableDate, DateViewRow, DateViewData } from "@/components/ui/dateTableView/src/type";
 
 const TABLE_ROW_NUMBER = 5;
 const TABLE_COL_NUMBER = 7;
-
-const creatDate = (date: number): TableDate => {
-  return {
-    year: 0,
-    month: 0,
-    date: date,
-    day: 0,
-    isToday: false
-  };
-};
 
 /**
  * 初始化一个月的所有天
@@ -38,7 +28,7 @@ const createMonth = (date: Date): Array<TableDate> => {
       month: lastMonthDate.getMonth() + 1,
       date: dayNumOfLastMonth - day,
       day: firstDay - day - 1,
-      isToday: false
+      isToday: dayNumOfLastMonth - day === date.getDate()
     } as TableDate);
   }
   const nextMonthDate = addMonths(date, 1);
@@ -50,7 +40,7 @@ const createMonth = (date: Date): Array<TableDate> => {
       month: nextMonthDate.getMonth() + 1,
       date: dateIndex + 1,
       day: (lastDay + dateIndex + 1) % TABLE_COL_NUMBER,
-      isToday: false
+      isToday: dateIndex + 1 === date.getDate()
     } as TableDate);
   }
   return solution;
@@ -77,32 +67,71 @@ export const initTableContent = (date: Date = new Date()): DateViewData => {
   } as DateViewData;
 };
 
-export const wheelUp = (tableData: DateViewData): void => {
+const creatDate = (date: Date): TableDate => {
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    date: date.getUTCDate(),
+    day: date.getUTCDay(),
+    isToday: false
+  };
+};
+
+const refreshCurrentMonth = (tableData: DateViewData): void => {
+  const numberMap = new Map<number, number>();
+  for (const dataRow of tableData.dateContent) {
+    for (const dataItem of dataRow.rowContent) {
+      const value = numberMap.get(dataItem.month);
+      numberMap.set(dataItem.month, value ? value + 1 : 1);
+    }
+  }
+  let maxNumber = 0;
+  let solutionMonth = 1;
+  numberMap.forEach((number, month) => {
+    if (number > maxNumber) {
+      solutionMonth = month;
+      maxNumber = number;
+    }
+  });
+  tableData.activeMonth = solutionMonth;
+};
+
+export const wheelUp = (tableData: DateViewData, date: Date = new Date()): void => {
   const tableContent: Array<DateViewRow> = tableData.dateContent;
-  const lastIndexOfContent = tableContent[TABLE_ROW_NUMBER - 1].rowContent[TABLE_COL_NUMBER - 1].date;
-  const currentRow = new Array<TableDate>(TABLE_COL_NUMBER);
+  const lastDateOfContent = tableContent[TABLE_ROW_NUMBER - 1].rowContent[TABLE_COL_NUMBER - 1];
+  let currentDateOfContent = new Date(Date.UTC(lastDateOfContent.year, lastDateOfContent.month - 1,
+    lastDateOfContent.date, 0, 0, 0));
+  const currentRow = new Array<TableDate>();
   for (let col = 0; col < TABLE_COL_NUMBER; col++) {
-    currentRow[col] = creatDate(lastIndexOfContent + col + 1);
-    currentRow[col].day = col;
+    currentDateOfContent = addDays(currentDateOfContent, 1);
+    const tableDate = creatDate(currentDateOfContent);
+    tableDate.isToday = tableDate.date === date.getDate();
+    currentRow.push(tableDate);
   }
   tableContent.push({
     rowNumber: tableContent[TABLE_ROW_NUMBER - 1].rowNumber + 1,
     rowContent: currentRow
   } as DateViewRow);
   tableContent.shift();
+  refreshCurrentMonth(tableData);
 };
 
-export const wheelDown = (tableData: DateViewData): void => {
+export const wheelDown = (tableData: DateViewData, date: Date = new Date()): void => {
   const tableContent: Array<DateViewRow> = tableData.dateContent;
-  const firstIndexOfContent = tableContent[0].rowContent[0].date;
-  const currentRow = new Array<TableDate>(TABLE_COL_NUMBER);
+  const firstDateOfContent = tableContent[0].rowContent[0];
+  let currentDateOfContent = new Date(Date.UTC(firstDateOfContent.year, firstDateOfContent.month - 1,
+    firstDateOfContent.date, 0, 0, 0));
+  const currentRow = new Array<TableDate>();
   for (let col = 0; col < TABLE_COL_NUMBER; col++) {
-    currentRow[col] = creatDate(firstIndexOfContent + col - TABLE_COL_NUMBER);
-    currentRow[col].day = col;
+    currentDateOfContent = subDays(currentDateOfContent, 1);
+    const tableDate = creatDate(currentDateOfContent);
+    tableDate.isToday = tableDate.date === date.getDate();
+    currentRow.unshift(tableDate);
   }
   tableContent.unshift({
     rowNumber: tableContent[0].rowNumber - 1,
     rowContent: currentRow
   } as DateViewRow);
   tableContent.pop();
+  refreshCurrentMonth(tableData);
 };
