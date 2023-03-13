@@ -4,6 +4,9 @@
   "directories": {
     "output": "dist_electron"
   },
+  "electronDownload":{
+    "mirror":"https://npm.taobao.org/mirrors/electron/"
+  },
   "extraResources": [
     { "from": "./build", "to": "../" }
   ],
