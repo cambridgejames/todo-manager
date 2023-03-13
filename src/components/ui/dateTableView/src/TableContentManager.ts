@@ -1,4 +1,4 @@
-import { addMonths, getDaysInMonth, subDays, subMonths } from "date-fns";
+import { addDays, addMonths, getDaysInMonth, subDays, subMonths } from "date-fns";
 import { Date as TableDate, DateViewRow, DateViewData } from "@/components/ui/dateTableView/src/type";
 
 const TABLE_ROW_NUMBER = 5;
@@ -96,19 +96,24 @@ const refreshCurrentMonth = (tableData: DateViewData): void => {
   tableData.activeMonth = solutionMonth;
 };
 
-export const wheelUp = (tableData: DateViewData): void => {
+export const wheelUp = (tableData: DateViewData, date: Date = new Date()): void => {
   const tableContent: Array<DateViewRow> = tableData.dateContent;
-  const lastIndexOfContent = tableContent[TABLE_ROW_NUMBER - 1].rowContent[TABLE_COL_NUMBER - 1].date;
-  const currentRow = new Array<TableDate>(TABLE_COL_NUMBER);
+  const lastDateOfContent = tableContent[TABLE_ROW_NUMBER - 1].rowContent[TABLE_COL_NUMBER - 1];
+  let currentDateOfContent = new Date(Date.UTC(lastDateOfContent.year, lastDateOfContent.month - 1,
+    lastDateOfContent.date, 0, 0, 0));
+  const currentRow = new Array<TableDate>();
   for (let col = 0; col < TABLE_COL_NUMBER; col++) {
-    currentRow[col] = creatDate(new Date());
-    currentRow[col].day = col;
+    currentDateOfContent = addDays(currentDateOfContent, 1);
+    const tableDate = creatDate(currentDateOfContent);
+    tableDate.isToday = tableDate.date === date.getDate();
+    currentRow.push(tableDate);
   }
   tableContent.push({
     rowNumber: tableContent[TABLE_ROW_NUMBER - 1].rowNumber + 1,
     rowContent: currentRow
   } as DateViewRow);
   tableContent.shift();
+  refreshCurrentMonth(tableData);
 };
 
 export const wheelDown = (tableData: DateViewData, date: Date = new Date()): void => {

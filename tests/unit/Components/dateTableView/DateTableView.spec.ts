@@ -1,8 +1,9 @@
 import { DateViewData } from "@/components/ui/dateTableView/src/type";
-import {initTableContent, wheelDown, wheelUp} from "@/components/ui/dateTableView/src/TableContentManager";
+import { initTableContent, wheelDown, wheelUp } from "@/components/ui/dateTableView/src/TableContentManager";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 
 import dataTestInitTableContent from "./data_testInitTableContent.json";
+import dateTestViewUp from "./data_testWheelUp.json";
 import dateTestViewDown from "./data_testWheelDown.json";
 
 describe("TableContentManager.ts", (): void => {
@@ -15,6 +16,18 @@ describe("TableContentManager.ts", (): void => {
   it("testInitTableContent", (): void => {
     const accept: DateViewData = initTableContent(date);
     const expected: DateViewData = dataTestInitTableContent as DateViewData;
+    expect(accept).toStrictEqual(expected);
+  });
+
+  /**
+   * 测试向下滚动及切换当前月
+   */
+  it("testWheelDown", (): void => {
+    const accept: DateViewData = initTableContent(date);
+    wheelUp(accept, date);
+    wheelUp(accept, date);
+    wheelUp(accept, date);
+    const expected: DateViewData = dateTestViewUp as DateViewData;
     expect(accept).toStrictEqual(expected);
   });
 
