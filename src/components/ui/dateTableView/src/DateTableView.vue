@@ -10,7 +10,9 @@
       <div v-for="itemRow in tableContent.dateContent" :key="`${itemRow.rowNumber}`" class="day-box-row">
         <div v-for="(itemCol, index) in itemRow.rowContent" :key="`${itemRow.rowNumber}-${index}`"
              :class="['day-box', { 'today': itemCol.isToday, 'active': itemCol.month === tableContent.activeMonth }]">
-          <span>{{ `${itemCol.date}` }}</span>
+          <div>{{ itemCol.date }}</div>
+          <div>{{ getLunarStr(itemCol.lunar) }}</div>
+          <div class="todo-number">{{ `${$t("dateView.todo")}0` }}</div>
         </div>
       </div>
     </transition-group>
@@ -19,7 +21,8 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import { DateViewData } from "./type";
+import { useI18n } from "vue-i18n";
+import { DateViewData, Lunar } from "./type";
 import {
   getActiveMonthDate,
   initTableContent,
@@ -61,10 +64,24 @@ watch(() => props.modelValue, value => {
     tableContent.value = initTableContent(new Date(), value);
   }
 }, { immediate: true, deep: true });
+
+const { locale } = useI18n();
+const getLunarStr = (lunar: Lunar): string => {
+  if (locale.value !== "zh-cn") {
+    return "";
+  }
+  if (lunar.solarTerm !== null) {
+    return lunar.solarTerm;
+  }
+  const monthLength = lunar.isLeap ? 3 : 2;
+  const str = lunar.lunarDate === 1 ? lunar.dateStr.substring(0, monthLength) : lunar.dateStr.substring(monthLength);
+  return lunar.lunarDate >= 30 ? str.replace("廿", "卅") : str;
+};
 </script>
 
 <style lang="scss" scoped>
 $title-box-height: 30px;
+$date-item-padding: 5px;
 
 .date-table-view-box {
   width: 100%;
@@ -109,8 +126,9 @@ $title-box-height: 30px;
       }
 
       .day-box {
-        padding: 5px;
-        border-radius: calc(var(--tm-article-padding) / 2);
+        padding: $date-item-padding;
+        border-radius: $date-item-padding;
+        position: relative;
         cursor: pointer;
         transition: all .3s ease-in-out;
 
@@ -119,6 +137,12 @@ $title-box-height: 30px;
         &:hover {
           color: var(--devui-text);
           background-color: var(--devui-global-bg);
+        }
+
+        .todo-number {
+          position: absolute;
+          left: $date-item-padding;
+          bottom: $date-item-padding;
         }
 
         &.active {
