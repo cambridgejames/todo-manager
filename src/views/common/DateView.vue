@@ -8,7 +8,7 @@
       <d-date-picker-pro class="date-function-selector" v-model="selectedMonth" type="month" />
     </div>
     <div class="date-table-view-container">
-      <DateTableView/>
+      <DateTableView v-model="selectedMonth"/>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ const vueApp = getCurrentInstance()?.appContext.config.globalProperties;
 
 const currentTime = ref<string>("");
 const currentDate = ref<string>("");
-const selectedMonth = ref<string>("");
+const selectedMonth = ref<Date>(new Date());
 
 const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const refreshTime = (date: Date): void => { currentTime.value = formatTime("HH:mm:ss", date); };
