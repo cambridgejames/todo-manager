@@ -22,7 +22,7 @@ describe("TableContentManager.ts", (): void => {
   /**
    * 测试向下滚动及切换当前月
    */
-  it("testWheelDown", (): void => {
+  it("testWheelUp", (): void => {
     const accept: DateViewData = initTableContent(date);
     wheelUp(accept, date);
     wheelUp(accept, date);

@@ -1,5 +1,6 @@
 import { addDays, addMonths, getDaysInMonth, subDays, subMonths } from "date-fns";
-import { Date as TableDate, DateViewRow, DateViewData } from "@/components/ui/dateTableView/src/type";
+import { getLunar } from "chinese-lunar-calendar";
+import { Date as TableDate, DateViewRow, DateViewData, Lunar } from "@/components/ui/dateTableView/src/type";
 
 const TABLE_ROW_NUMBER = 5;
 const TABLE_COL_NUMBER = 7;
@@ -13,6 +14,7 @@ const TABLE_COL_NUMBER = 7;
 const createMonth = (date: Date, monthDate: Date = date): Array<TableDate> => {
   const solution = [...Array<number>(getDaysInMonth(monthDate) + 1).keys()].slice(1).map(dateIndex => {
     return {
+      lunar: getLunar(monthDate.getFullYear(), monthDate.getMonth() + 1, dateIndex) as Lunar,
       year: monthDate.getFullYear(),
       month: monthDate.getMonth() + 1,
       date: dateIndex,
@@ -25,6 +27,7 @@ const createMonth = (date: Date, monthDate: Date = date): Array<TableDate> => {
   const firstDay = solution[0].day;
   for (let day = 0; day < firstDay; day++) {
     solution.unshift({
+      lunar: getLunar(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, dayNumOfLastMonth - day) as Lunar,
       year: lastMonthDate.getFullYear(),
       month: lastMonthDate.getMonth() + 1,
       date: dayNumOfLastMonth - day,
@@ -37,6 +40,7 @@ const createMonth = (date: Date, monthDate: Date = date): Array<TableDate> => {
   const lastDay = solution[solution.length - 1].day;
   for (let dateIndex = 0; dateIndex < nextMonthDayNumber; dateIndex++) {
     solution.push({
+      lunar: getLunar(nextMonthDate.getFullYear(), nextMonthDate.getMonth() + 1, dateIndex + 1) as Lunar,
       year: nextMonthDate.getFullYear(),
       month: nextMonthDate.getMonth() + 1,
       date: dateIndex + 1,
@@ -71,6 +75,7 @@ export const initTableContent = (date: Date = new Date(), monthDate: Date = date
 
 const creatDate = (date: Date): TableDate => {
   return {
+    lunar: getLunar(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()) as Lunar,
     year: date.getUTCFullYear(),
     month: date.getUTCMonth() + 1,
     date: date.getUTCDate(),
