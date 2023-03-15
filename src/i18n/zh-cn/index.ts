@@ -19,6 +19,7 @@ export default {
     settings: "设置"
   },
   dateView: {
-    dateTemplate: "{year}年{month}月{date}日\u2003{day}\u2003{lunar}"
+    dateTemplate: "{year}年{month}月{date}日\u2003{day}\u2003{lunar}",
+    todo: "代办："
   }
 };

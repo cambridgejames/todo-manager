@@ -19,6 +19,7 @@ export default {
     settings: "Settings"
   },
   dateView: {
-    dateTemplate: "{day}, {month} {date}, {year}"
+    dateTemplate: "{day}, {month} {date}, {year}",
+    todo: "To-dos: "
   }
 };

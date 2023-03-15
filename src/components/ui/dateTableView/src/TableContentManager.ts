@@ -1,5 +1,6 @@
 import { addDays, addMonths, getDaysInMonth, subDays, subMonths } from "date-fns";
-import { Date as TableDate, DateViewRow, DateViewData } from "@/components/ui/dateTableView/src/type";
+import { getLunar } from "chinese-lunar-calendar";
+import { Date as TableDate, DateViewRow, DateViewData, Lunar } from "@/components/ui/dateTableView/src/type";
 
 const TABLE_ROW_NUMBER = 5;
 const TABLE_COL_NUMBER = 7;
@@ -8,22 +9,25 @@ const TABLE_COL_NUMBER = 7;
  * 初始化一个月的所有天
  *
  * @param date 这个月所在的天
+ * @param monthDate 月份日期
  */
-const createMonth = (date: Date): Array<TableDate> => {
-  const solution = [...Array<number>(getDaysInMonth(date) + 1).keys()].slice(1).map(dateIndex => {
+const createMonth = (date: Date, monthDate: Date = date): Array<TableDate> => {
+  const solution = [...Array<number>(getDaysInMonth(monthDate) + 1).keys()].slice(1).map(dateIndex => {
     return {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
+      lunar: getLunar(monthDate.getFullYear(), monthDate.getMonth() + 1, dateIndex) as Lunar,
+      year: monthDate.getFullYear(),
+      month: monthDate.getMonth() + 1,
       date: dateIndex,
-      day: (date.getDay() - (date.getDate() - dateIndex) % TABLE_COL_NUMBER + TABLE_COL_NUMBER) % TABLE_COL_NUMBER,
+      day: (monthDate.getDay() - (monthDate.getDate() - dateIndex) % TABLE_COL_NUMBER + TABLE_COL_NUMBER) % TABLE_COL_NUMBER,
       isToday: dateIndex === date.getDate()
     } as TableDate;
   });
-  const lastMonthDate = subMonths(date, 1);
+  const lastMonthDate = subMonths(monthDate, 1);
   const dayNumOfLastMonth = getDaysInMonth(lastMonthDate);
   const firstDay = solution[0].day;
   for (let day = 0; day < firstDay; day++) {
     solution.unshift({
+      lunar: getLunar(lastMonthDate.getFullYear(), lastMonthDate.getMonth() + 1, dayNumOfLastMonth - day) as Lunar,
       year: lastMonthDate.getFullYear(),
       month: lastMonthDate.getMonth() + 1,
       date: dayNumOfLastMonth - day,
@@ -31,11 +35,12 @@ const createMonth = (date: Date): Array<TableDate> => {
       isToday: dayNumOfLastMonth - day === date.getDate()
     } as TableDate);
   }
-  const nextMonthDate = addMonths(date, 1);
+  const nextMonthDate = addMonths(monthDate, 1);
   const nextMonthDayNumber = TABLE_ROW_NUMBER * TABLE_COL_NUMBER - solution.length;
   const lastDay = solution[solution.length - 1].day;
   for (let dateIndex = 0; dateIndex < nextMonthDayNumber; dateIndex++) {
     solution.push({
+      lunar: getLunar(nextMonthDate.getFullYear(), nextMonthDate.getMonth() + 1, dateIndex + 1) as Lunar,
       year: nextMonthDate.getFullYear(),
       month: nextMonthDate.getMonth() + 1,
       date: dateIndex + 1,
@@ -50,9 +55,10 @@ const createMonth = (date: Date): Array<TableDate> => {
  * 生成一个月的数据
  *
  * @param date 当前日期
+ * @param monthDate 月份日期
  */
-export const initTableContent = (date: Date = new Date()): DateViewData => {
-  const monthDataList: Array<TableDate> = createMonth(date);
+export const initTableContent = (date: Date = new Date(), monthDate: Date = date): DateViewData => {
+  const monthDataList: Array<TableDate> = createMonth(date, monthDate);
   const solution = new Array<DateViewRow>();
   let rowNumber = 0;
   for (let index = 0; index < monthDataList.length; index += TABLE_COL_NUMBER) {
@@ -62,13 +68,14 @@ export const initTableContent = (date: Date = new Date()): DateViewData => {
     } as DateViewRow);
   }
   return {
-    activeMonth: date.getMonth() + 1,
+    activeMonth: monthDate.getMonth() + 1,
     dateContent: solution
   } as DateViewData;
 };
 
 const creatDate = (date: Date): TableDate => {
   return {
+    lunar: getLunar(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate()) as Lunar,
     year: date.getUTCFullYear(),
     month: date.getUTCMonth() + 1,
     date: date.getUTCDate(),
@@ -134,4 +141,20 @@ export const wheelDown = (tableData: DateViewData, date: Date = new Date()): voi
   } as DateViewRow);
   tableContent.pop();
   refreshCurrentMonth(tableData);
+};
+
+/**
+ * 获取activeMonth对应的月份日期
+ *
+ * @param tableData 一个月的数据
+ */
+export const getActiveMonthDate = (tableData: DateViewData): Date => {
+  let currentDate: TableDate = tableData.dateContent[0].rowContent[0];
+  for (const dateViewRow of tableData.dateContent) {
+    currentDate = dateViewRow.rowContent[0];
+    if (currentDate.month === tableData.activeMonth) {
+      break;
+    }
+  }
+  return new Date(currentDate.year, currentDate.month - 1, 1, 0, 0, 0);
 };

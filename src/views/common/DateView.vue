@@ -8,7 +8,7 @@
       <d-date-picker-pro class="date-function-selector" v-model="selectedMonth" type="month" />
     </div>
     <div class="date-table-view-container">
-      <DateTableView/>
+      <DateTableView v-model="selectedMonth"/>
     </div>
   </div>
 </template>
@@ -20,17 +20,18 @@ import { ipcRenderer, IpcRendererEvent } from "electron";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
 import { getLunar } from "chinese-lunar-calendar";
+import { Lunar } from "@/components/ui/dateTableView/src/type";
 
 const vueApp = getCurrentInstance()?.appContext.config.globalProperties;
 
 const currentTime = ref<string>("");
 const currentDate = ref<string>("");
-const selectedMonth = ref<string>("");
+const selectedMonth = ref<Date>(new Date());
 
 const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 const refreshTime = (date: Date): void => { currentTime.value = formatTime("HH:mm:ss", date); };
 const refreshDate = (date: Date): void => {
-  const lunar = getLunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  const lunar = getLunar(date.getFullYear(), date.getMonth() + 1, date.getDate()) as Lunar;
   currentDate.value = String(vueApp?.$t("dateView.dateTemplate", {
     year: date.getFullYear(),
     month: date.getMonth() + 1,

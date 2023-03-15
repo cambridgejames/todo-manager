@@ -9,8 +9,10 @@
                       name="slide" tag="div" @wheel.prevent.stop="onWheel">
       <div v-for="itemRow in tableContent.dateContent" :key="`${itemRow.rowNumber}`" class="day-box-row">
         <div v-for="(itemCol, index) in itemRow.rowContent" :key="`${itemRow.rowNumber}-${index}`"
-             :class="['day-box', { 'today': itemCol.isToday }]">
-          <span>{{ itemCol.date }}</span>
+             :class="['day-box', { 'today': itemCol.isToday, 'active': itemCol.month === tableContent.activeMonth }]">
+          <div>{{ itemCol.date }}</div>
+          <div>{{ getLunarStr(itemCol.lunar) }}</div>
+          <div class="todo-number">{{ `${$t("dateView.todo")}0` }}</div>
         </div>
       </div>
     </transition-group>
@@ -18,23 +20,92 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import { DateViewData } from "./type";
-import { initTableContent, wheelDown, wheelUp } from "@/components/ui/dateTableView/src/TableContentManager";
+import { ipcRenderer, IpcRendererEvent } from "electron";
+import { onMounted, onUnmounted, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import {
+  getActiveMonthDate,
+  initTableContent,
+  wheelDown,
+  wheelUp
+} from "@/components/ui/dateTableView/src/TableContentManager";
+import { DateViewData, Lunar } from "./type";
+
+const props = defineProps({
+  modelValue: {
+    type: Date,
+    default: new Date()
+  }
+});
+const emit = defineEmits(["update:modelValue"]);
 
 const titleContent = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-const tableContent = ref<DateViewData>(initTableContent());
+const tableContent = ref<DateViewData>(initTableContent(new Date(), props.modelValue));
 const isWheelUp = ref<boolean>(false);
+let isWheeling: boolean = false;
+let timeout: number = -1;
 
 const onWheel = (event: WheelEvent): void => {
+  isWheeling = true;
   const tableContentValue = tableContent.value;
   isWheelUp.value = event.deltaY > 0;
-  event.deltaY > 0 ? wheelUp(tableContentValue) : wheelDown(tableContentValue);
+  const monthBefore = tableContentValue.activeMonth;
+  isWheelUp.value ? wheelUp(tableContentValue) : wheelDown(tableContentValue);
+  if (tableContentValue.activeMonth !== monthBefore) {
+    emit("update:modelValue", getActiveMonthDate(tableContentValue));
+  }
+  if (timeout > 0) {
+    window.clearTimeout(timeout);
+  }
+  timeout = window.setTimeout(() => { isWheeling = false; }, 500);
 };
+
+watch(() => props.modelValue, value => {
+  if (!isWheeling) {
+    tableContent.value = initTableContent(new Date(), value);
+  }
+}, { immediate: true, deep: true });
+
+const { locale } = useI18n();
+const getLunarStr = (lunar: Lunar): string => {
+  if (locale.value !== "zh-cn") {
+    return "";
+  }
+  if (lunar.solarTerm !== null) {
+    return lunar.solarTerm;
+  }
+  const monthLength = lunar.isLeap ? 3 : 2;
+  const str = lunar.lunarDate === 1 ? lunar.dateStr.substring(0, monthLength) : lunar.dateStr.substring(monthLength);
+  return lunar.lunarDate >= 30 ? str.replace("廿", "卅") : str;
+};
+
+const dateConsumer = (event: IpcRendererEvent, timestamp: number): void => {
+  isWheeling = true;
+  const tableContentValue = tableContent.value;
+  const monthBefore = tableContentValue.activeMonth;
+  tableContent.value = initTableContent(new Date(timestamp), props.modelValue);
+  if (tableContentValue.activeMonth !== monthBefore) {
+    emit("update:modelValue", getActiveMonthDate(tableContentValue));
+  }
+  if (timeout > 0) {
+    window.clearTimeout(timeout);
+  }
+  timeout = window.setTimeout(() => { isWheeling = false; }, 500);
+};
+
+onMounted(() => {
+  ipcRenderer.on(IpcMainChannel.TIMER_DAY, dateConsumer);
+});
+
+onUnmounted(() => {
+  ipcRenderer.removeListener(IpcMainChannel.TIMER_DAY, dateConsumer);
+});
 </script>
 
 <style lang="scss" scoped>
 $title-box-height: 30px;
+$date-item-padding: 5px;
 
 .date-table-view-box {
   width: 100%;
@@ -79,18 +150,36 @@ $title-box-height: 30px;
       }
 
       .day-box {
-        padding: 5px;
-        border-radius: calc(var(--tm-article-padding) / 2);
-        background-color: var(--devui-global-bg);
+        padding: $date-item-padding;
+        border-radius: $date-item-padding;
+        position: relative;
         cursor: pointer;
-        transition: background-color .2s ease-in-out;
+        transition: all .3s ease-in-out;
 
-        &.today {
-          border: 1px solid var(--devui-primary);
-        }
+        color: var(--devui-disabled-text);
 
         &:hover {
-          background-color: var(--tm-primary-hover);
+          color: var(--devui-text);
+          background-color: var(--devui-global-bg);
+        }
+
+        .todo-number {
+          position: absolute;
+          left: $date-item-padding;
+          bottom: $date-item-padding;
+        }
+
+        &.active {
+          color: var(--devui-text);
+          background-color: var(--devui-global-bg);
+
+          &.today {
+            border: 1px solid var(--devui-primary);
+          }
+
+          &:hover {
+            background-color: var(--tm-primary-hover);
+          }
         }
       }
     }
