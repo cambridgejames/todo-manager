@@ -20,15 +20,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ipcRenderer, IpcRendererEvent } from "electron";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { DateViewData, Lunar } from "./type";
+import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import {
   getActiveMonthDate,
   initTableContent,
   wheelDown,
   wheelUp
 } from "@/components/ui/dateTableView/src/TableContentManager";
+import { DateViewData, Lunar } from "./type";
 
 const props = defineProps({
   modelValue: {
@@ -77,6 +79,28 @@ const getLunarStr = (lunar: Lunar): string => {
   const str = lunar.lunarDate === 1 ? lunar.dateStr.substring(0, monthLength) : lunar.dateStr.substring(monthLength);
   return lunar.lunarDate >= 30 ? str.replace("廿", "卅") : str;
 };
+
+const dateConsumer = (event: IpcRendererEvent, timestamp: number): void => {
+  isWheeling = true;
+  const tableContentValue = tableContent.value;
+  const monthBefore = tableContentValue.activeMonth;
+  tableContent.value = initTableContent(new Date(timestamp), props.modelValue);
+  if (tableContentValue.activeMonth !== monthBefore) {
+    emit("update:modelValue", getActiveMonthDate(tableContentValue));
+  }
+  if (timeout > 0) {
+    window.clearTimeout(timeout);
+  }
+  timeout = window.setTimeout(() => { isWheeling = false; }, 500);
+};
+
+onMounted(() => {
+  ipcRenderer.on(IpcMainChannel.TIMER_DAY, dateConsumer);
+});
+
+onUnmounted(() => {
+  ipcRenderer.removeListener(IpcMainChannel.TIMER_DAY, dateConsumer);
+});
 </script>
 
 <style lang="scss" scoped>
