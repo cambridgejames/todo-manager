@@ -9,10 +9,19 @@
                       name="slide" tag="div" @wheel.prevent.stop="onWheel">
       <div v-for="itemRow in tableContent.dateContent" :key="`${itemRow.rowNumber}`" class="day-box-row">
         <div v-for="(itemCol, index) in itemRow.rowContent" :key="`${itemRow.rowNumber}-${index}`"
-             :class="['day-box', { 'today': itemCol.isToday, 'active': itemCol.month === tableContent.activeMonth }]">
-          <div>{{ itemCol.date }}</div>
-          <div>{{ getLunarStr(itemCol.lunar) }}</div>
+             :class="['day-box', {
+               'today': itemCol.isToday,
+               'active': itemCol.month === tableContent.activeMonth,
+               'current': itemCol.month === (new Date().getMonth() + 1)
+             }]">
+          <div class="day-row">{{ itemCol.date }}</div>
+          <div class="day-row" v-if="locale === 'zh-cn'">{{ getLunarStr(itemCol.lunar) }}</div>
           <div class="todo-number">{{ `${$t("dateView.todo")}0` }}</div>
+          <div v-if="itemCol.month === tableContent.activeMonth" class="day-row sign">
+            <div v-if="[1, 2, 3, 4, 5].includes(itemCol.day)" class="working-day">{{ $t("dateView.sign.workingDay") }}</div>
+            <div v-else-if="[0, 6].includes(itemCol.day)" class="holiday">{{ $t("dateView.sign.holiday") }}</div>
+          </div>
+          <div class="day-row holiday-name" v-if="locale === 'zh-cn'"></div>
         </div>
       </div>
     </transition-group>
@@ -26,7 +35,7 @@ import { useI18n } from "vue-i18n";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import {
   getActiveMonthDate,
-  initTableContent,
+  initTableContent, refreshToday,
   wheelDown,
   wheelUp
 } from "@/components/ui/dateTableView/src/TableContentManager";
@@ -81,17 +90,7 @@ const getLunarStr = (lunar: Lunar): string => {
 };
 
 const dateConsumer = (event: IpcRendererEvent, timestamp: number): void => {
-  isWheeling = true;
-  const tableContentValue = tableContent.value;
-  const monthBefore = tableContentValue.activeMonth;
-  tableContent.value = initTableContent(new Date(timestamp), props.modelValue);
-  if (tableContentValue.activeMonth !== monthBefore) {
-    emit("update:modelValue", getActiveMonthDate(tableContentValue));
-  }
-  if (timeout > 0) {
-    window.clearTimeout(timeout);
-  }
-  timeout = window.setTimeout(() => { isWheeling = false; }, 500);
+  refreshToday(tableContent.value, new Date(timestamp));
 };
 
 onMounted(() => {
@@ -106,6 +105,11 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 $title-box-height: 30px;
 $date-item-padding: 5px;
+$date-item-content-line-height: 20px;
+$holiday-sign-size: 14px;
+
+$table-row-number: 6;
+$table-col-number: 7;
 
 .date-table-view-box {
   width: 100%;
@@ -139,10 +143,10 @@ $date-item-padding: 5px;
 
     .day-box-row {
       width: 100%;
-      height: calc((100% - var(--tm-article-padding) * 4) / 5);
+      height: calc((100% - var(--tm-article-padding) * calc($table-row-number - 1)) / $table-row-number);
       margin-bottom: var(--tm-article-padding);
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat($table-col-number, 1fr);
       grid-gap: var(--tm-article-padding);
 
       &:last-child {
@@ -155,7 +159,6 @@ $date-item-padding: 5px;
         position: relative;
         cursor: pointer;
         transition: all .3s ease-in-out;
-
         color: var(--devui-disabled-text);
 
         &:hover {
@@ -163,10 +166,49 @@ $date-item-padding: 5px;
           background-color: var(--devui-global-bg);
         }
 
+        .day-row {
+          height: $date-item-content-line-height;
+        }
+
         .todo-number {
           position: absolute;
           left: $date-item-padding;
           bottom: $date-item-padding;
+          font-size: 12px;
+        }
+
+        .sign {
+          position: absolute;
+          right: $date-item-padding;
+          top: $date-item-padding;
+          font-size: 12px;
+          width: $holiday-sign-size;
+
+          .working-day, .holiday {
+            position: absolute;
+            right: 0;
+            top: calc(($date-item-content-line-height - $holiday-sign-size) / 2);
+            width: $holiday-sign-size;
+            height: $holiday-sign-size;
+            border-radius: $holiday-sign-size;
+            line-height: $holiday-sign-size;
+            text-align: center;
+            color: var(--devui-icon-fill-active);
+          }
+
+          .working-day {
+            background-color: var(--devui-danger);
+          }
+
+          .holiday {
+            background-color: var(--devui-success);
+          }
+        }
+
+        .holiday-name {
+          position: absolute;
+          top: calc($date-item-padding + $date-item-content-line-height);
+          right: $date-item-padding;
         }
 
         &.active {
@@ -175,6 +217,15 @@ $date-item-padding: 5px;
 
           &.today {
             border: 1px solid var(--devui-primary);
+
+            &.current {
+              background-color: var(--devui-primary);
+              color: var(--devui-icon-fill-active);
+            }
+          }
+
+          &.solar:not(.current) {
+            background-image: none;
           }
 
           &:hover {

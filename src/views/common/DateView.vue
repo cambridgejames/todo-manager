@@ -118,6 +118,10 @@ $function-container-width: 300px;
       width: $function-container-width;
       flex-grow: 0;
       flex-shrink: 0;
+
+      :deep(.devui-input-slot__suffix) {
+        display: none;
+      }
     }
   }
 

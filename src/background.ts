@@ -18,8 +18,8 @@ async function createWindow() {
   Menu.setApplicationMenu(null);
   rollbackFunc = await getRollbackFunc();
   const mainBrowserWindow = new BrowserWindow({
-    width: 900,
-    height: 600,
+    width: 960,
+    height: 680,
     title: "ElectricTodo",
     titleBarStyle: "hidden",
     backgroundColor: "#2b2d30",

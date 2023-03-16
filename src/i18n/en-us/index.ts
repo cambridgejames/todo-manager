@@ -20,6 +20,10 @@ export default {
   },
   dateView: {
     dateTemplate: "{day}, {month} {date}, {year}",
-    todo: "To-dos: "
+    todo: "To-dos: ",
+    sign: {
+      workingDay: "W",
+      holiday: "H"
+    }
   }
 };

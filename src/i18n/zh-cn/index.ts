@@ -20,6 +20,10 @@ export default {
   },
   dateView: {
     dateTemplate: "{year}年{month}月{date}日\u2003{day}\u2003{lunar}",
-    todo: "代办："
+    todo: "代办：",
+    sign: {
+      workingDay: "班",
+      holiday: "休"
+    }
   }
 };
