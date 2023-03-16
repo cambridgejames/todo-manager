@@ -9,7 +9,11 @@
                       name="slide" tag="div" @wheel.prevent.stop="onWheel">
       <div v-for="itemRow in tableContent.dateContent" :key="`${itemRow.rowNumber}`" class="day-box-row">
         <div v-for="(itemCol, index) in itemRow.rowContent" :key="`${itemRow.rowNumber}-${index}`"
-             :class="['day-box', { 'today': itemCol.isToday, 'active': itemCol.month === tableContent.activeMonth }]">
+             :class="['day-box', {
+               'today': itemCol.isToday,
+               'active': itemCol.month === tableContent.activeMonth,
+               'current': itemCol.month === (new Date().getMonth() + 1)
+             }]">
           <div>{{ itemCol.date }}</div>
           <div>{{ getLunarStr(itemCol.lunar) }}</div>
           <div class="todo-number">{{ `${$t("dateView.todo")}0` }}</div>
@@ -26,7 +30,7 @@ import { useI18n } from "vue-i18n";
 import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import {
   getActiveMonthDate,
-  initTableContent,
+  initTableContent, refreshToday,
   wheelDown,
   wheelUp
 } from "@/components/ui/dateTableView/src/TableContentManager";
@@ -81,17 +85,7 @@ const getLunarStr = (lunar: Lunar): string => {
 };
 
 const dateConsumer = (event: IpcRendererEvent, timestamp: number): void => {
-  isWheeling = true;
-  const tableContentValue = tableContent.value;
-  const monthBefore = tableContentValue.activeMonth;
-  tableContent.value = initTableContent(new Date(timestamp), props.modelValue);
-  if (tableContentValue.activeMonth !== monthBefore) {
-    emit("update:modelValue", getActiveMonthDate(tableContentValue));
-  }
-  if (timeout > 0) {
-    window.clearTimeout(timeout);
-  }
-  timeout = window.setTimeout(() => { isWheeling = false; }, 500);
+  refreshToday(tableContent.value, new Date(timestamp));
 };
 
 onMounted(() => {
@@ -106,6 +100,9 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 $title-box-height: 30px;
 $date-item-padding: 5px;
+
+$table-row-number: 6;
+$table-col-number: 7;
 
 .date-table-view-box {
   width: 100%;
@@ -139,10 +136,10 @@ $date-item-padding: 5px;
 
     .day-box-row {
       width: 100%;
-      height: calc((100% - var(--tm-article-padding) * 4) / 5);
+      height: calc((100% - var(--tm-article-padding) * calc($table-row-number - 1)) / $table-row-number);
       margin-bottom: var(--tm-article-padding);
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat($table-col-number, 1fr);
       grid-gap: var(--tm-article-padding);
 
       &:last-child {
@@ -167,6 +164,7 @@ $date-item-padding: 5px;
           position: absolute;
           left: $date-item-padding;
           bottom: $date-item-padding;
+          font-size: 12px;
         }
 
         &.active {
@@ -175,6 +173,15 @@ $date-item-padding: 5px;
 
           &.today {
             border: 1px solid var(--devui-primary);
+
+            &.current {
+              background-color: var(--devui-primary);
+              color: var(--devui-icon-fill-active);
+            }
+          }
+
+          &.solar:not(.current) {
+            background-image: none;
           }
 
           &:hover {

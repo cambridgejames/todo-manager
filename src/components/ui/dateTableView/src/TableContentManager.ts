@@ -2,7 +2,7 @@ import { addDays, addMonths, getDaysInMonth, subDays, subMonths } from "date-fns
 import { getLunar } from "chinese-lunar-calendar";
 import { Date as TableDate, DateViewRow, DateViewData, Lunar } from "@/components/ui/dateTableView/src/type";
 
-const TABLE_ROW_NUMBER = 5;
+const TABLE_ROW_NUMBER = 6;
 const TABLE_COL_NUMBER = 7;
 
 /**
@@ -157,4 +157,19 @@ export const getActiveMonthDate = (tableData: DateViewData): Date => {
     }
   }
   return new Date(currentDate.year, currentDate.month - 1, 1, 0, 0, 0);
+};
+
+/**
+ * 刷新当前日期
+ *
+ * @param tableData 一个月的数据
+ * @param date 当前日期
+ */
+export const refreshToday = (tableData: DateViewData, date = new Date()): void => {
+  const todayDate = date.getDate();
+  for (const dateViewRow of tableData.dateContent) {
+    for (const dateViewItem of dateViewRow.rowContent) {
+      dateViewItem.isToday = dateViewItem.date === todayDate;
+    }
+  }
 };
