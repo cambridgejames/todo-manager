@@ -2,6 +2,9 @@
   "devui": {
     "devui-global-bg": "#f7f8fa",
     "devui-global-bg-normal": "#ffffff",
+    "devui-danger": "#eb7171",
+    "devui-success": "#57965c",
+    "devui-info": "#366ace",
     "devui-icon-fill": "#6c707e",
     "devui-icon-fill-active": "#ffffff",
     "devui-form-control-bg": "#ffffff",

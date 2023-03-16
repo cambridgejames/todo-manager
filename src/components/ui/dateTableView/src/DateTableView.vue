@@ -14,9 +14,14 @@
                'active': itemCol.month === tableContent.activeMonth,
                'current': itemCol.month === (new Date().getMonth() + 1)
              }]">
-          <div>{{ itemCol.date }}</div>
-          <div>{{ getLunarStr(itemCol.lunar) }}</div>
+          <div class="day-row">{{ itemCol.date }}</div>
+          <div class="day-row" v-if="locale === 'zh-cn'">{{ getLunarStr(itemCol.lunar) }}</div>
           <div class="todo-number">{{ `${$t("dateView.todo")}0` }}</div>
+          <div v-if="itemCol.month === tableContent.activeMonth" class="day-row sign">
+            <div v-if="[1, 2, 3, 4, 5].includes(itemCol.day)" class="working-day">{{ $t("dateView.sign.workingDay") }}</div>
+            <div v-else-if="[0, 6].includes(itemCol.day)" class="holiday">{{ $t("dateView.sign.holiday") }}</div>
+          </div>
+          <div class="day-row holiday-name" v-if="locale === 'zh-cn'"></div>
         </div>
       </div>
     </transition-group>
@@ -100,6 +105,8 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 $title-box-height: 30px;
 $date-item-padding: 5px;
+$date-item-content-line-height: 20px;
+$holiday-sign-size: 14px;
 
 $table-row-number: 6;
 $table-col-number: 7;
@@ -152,7 +159,6 @@ $table-col-number: 7;
         position: relative;
         cursor: pointer;
         transition: all .3s ease-in-out;
-
         color: var(--devui-disabled-text);
 
         &:hover {
@@ -160,11 +166,49 @@ $table-col-number: 7;
           background-color: var(--devui-global-bg);
         }
 
+        .day-row {
+          height: $date-item-content-line-height;
+        }
+
         .todo-number {
           position: absolute;
           left: $date-item-padding;
           bottom: $date-item-padding;
           font-size: 12px;
+        }
+
+        .sign {
+          position: absolute;
+          right: $date-item-padding;
+          top: $date-item-padding;
+          font-size: 12px;
+          width: $holiday-sign-size;
+
+          .working-day, .holiday {
+            position: absolute;
+            right: 0;
+            top: calc(($date-item-content-line-height - $holiday-sign-size) / 2);
+            width: $holiday-sign-size;
+            height: $holiday-sign-size;
+            border-radius: $holiday-sign-size;
+            line-height: $holiday-sign-size;
+            text-align: center;
+            color: var(--devui-icon-fill-active);
+          }
+
+          .working-day {
+            background-color: var(--devui-danger);
+          }
+
+          .holiday {
+            background-color: var(--devui-success);
+          }
+        }
+
+        .holiday-name {
+          position: absolute;
+          top: calc($date-item-padding + $date-item-content-line-height);
+          right: $date-item-padding;
         }
 
         &.active {
