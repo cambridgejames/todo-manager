@@ -106,7 +106,7 @@ onUnmounted(() => {
 $title-box-height: 30px;
 $date-item-padding: 5px;
 $date-item-content-line-height: 20px;
-$holiday-sign-size: 14px;
+$holiday-sign-size: 16px;
 
 $table-row-number: 6;
 $table-col-number: 7;
