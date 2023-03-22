@@ -1,0 +1,21 @@
+{
+  "name": "@todo-manager/plugin-sdk",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev src/index.ts",
+    "build": "yarn clean && tsc",
+    "clean": "rimraf dist"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.15.3",
+    "rimraf": "^4.4.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+  }
+}
