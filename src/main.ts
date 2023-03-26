@@ -19,9 +19,14 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 // 自定义全局样式
 import "./assets/css/index.css";
 
+// 插件加载器
+import PluginManager from "@/assets/ts/plugin/PluginManager";
+
 // 配置主题
 const themeService: ThemeService | null = ThemeServiceInit(allThemData.themes, allThemData.defaultThemeId);
 changeTheme(themeService, allThemData.themes[allThemData.defaultThemeId]);
+
+PluginManager.instance();
 
 const app = createApp(App);
 app.provide("themeService", themeService).provide("allThemeData", allThemData);

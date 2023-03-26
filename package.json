@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "clean": "rimraf dist dist_electron",
-    "build:plugin-sdk": "cd plugins/sdk && yarn build",
+    "build:plugin-sdk": "cd sdk && yarn build",
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
