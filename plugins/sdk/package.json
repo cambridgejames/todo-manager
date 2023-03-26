@@ -5,10 +5,10 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "build": "yarn clean && tsc",
-    "clean": "rimraf dist"
+    "clean": "rimraf lib"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.15.3",
