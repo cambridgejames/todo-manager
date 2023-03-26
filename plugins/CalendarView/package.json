@@ -1,14 +1,19 @@
 {
-  "name": "calendar-view",
+  "name": "@todo-manager/calendar-vieww-plugin",
   "version": "0.1.0",
   "private": true,
+  "description": "ElectronTodo日历视图插件",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "yarn clean && yarn build:lib",
+    "build:lib": "vue-cli-service build --target lib --name index --dest lib ./packages/index.ts",
     "test:unit": "vue-cli-service test:unit",
+    "test:coverage": "vue-cli-service test:unit --coverage",
+    "clean": "rimraf lib",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@todo-manager/plugin-sdk": "link:../sdk",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },
@@ -33,5 +38,7 @@
     "sass-loader": "^12.0.0",
     "ts-jest": "^27.0.4",
     "typescript": "~4.5.5"
-  }
+  },
+  "license": "MIT",
+  "typings": "lib/index.d.ts"
 }
