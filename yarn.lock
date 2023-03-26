@@ -1881,7 +1881,7 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@todo-manager/plugin-sdk@link:./plugins/sdk":
+"@todo-manager/plugin-sdk@link:./sdk":
   version "0.0.0"
   uid ""
 

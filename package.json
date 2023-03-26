@@ -22,7 +22,7 @@
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
     "@ckeditor/ckeditor5-vue": "^4.0.1",
     "@devui-design/icons": "^1.3.0",
-    "@todo-manager/plugin-sdk": "link:./plugins/sdk",
+    "@todo-manager/plugin-sdk": "link:./sdk",
     "chinese-lunar-calendar": "^1.0.1",
     "core-js": "^3.8.3",
     "cron": "^2.2.0",
