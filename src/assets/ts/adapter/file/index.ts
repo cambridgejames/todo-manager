@@ -10,7 +10,7 @@ const CONFIG_FILE_ENCODING = "utf-8";
  *
  * @param pathToFile 配置文件的URL（从assets目录开始）
  */
-const getConfigPath = (pathToFile: string): string => {
+export const getConfigPath = (pathToFile: string): string => {
   return IS_DEVELOPMENT ? path.join(".", RESOURCE_DIR_NAME, pathToFile) : path.join(".", pathToFile);
 };
 

@@ -18,6 +18,13 @@ module.exports = defineConfig({
   configureWebpack: {
     experiments: {
       topLevelAwait: true
+    },
+    module: {
+      parser: {
+        javascript: {
+          commonjsMagicComments: true
+        }
+      }
     }
   },
   chainWebpack: config => {

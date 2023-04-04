@@ -1,6 +1,7 @@
 import { PluginClient } from "@todo-manager/plugin-sdk/lib/client/PluginClient";
 import { readDir } from "@/assets/ts/adapter/file";
 import PluginHolder from "@/assets/ts/plugin/PluginHolder";
+import * as path from "path";
 
 const PLUGIN_DIR: string = "/plugins";
 const PLUGIN_FILTER: string = "^(?!.*sdk).*$";
@@ -28,6 +29,12 @@ export default class PluginManager {
       const dirName = `${PLUGIN_DIR}/${directory}/lib`;
       const fileList = await readDir(dirName);
       console.log(fileList);
+      const dataName = path.resolve(`@/../build/${dirName}/index.common.js`);
+      console.log(dataName);
+      const plugin = require(/* webpackIgnore: true */ dataName);
+      const instance: PluginClient = plugin.default.getInstance();
+      console.log(instance);
+      instance.onMount();
     }
   }
 }

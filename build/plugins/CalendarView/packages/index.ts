@@ -1,4 +1,4 @@
-import { PluginClient } from "@todo-manager/plugin-sdk/lib/client/PluginClient";
+import { PluginClient, PluginExport } from "@todo-manager/plugin-sdk/lib/client";
 
 class CalendarViewPlugin implements PluginClient {
   onMount(): void {
@@ -26,4 +26,4 @@ const getInstance = (): PluginClient => {
 
 export default {
   getInstance
-};
+} as PluginExport;
