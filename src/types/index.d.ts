@@ -6,3 +6,5 @@ declare module "jsonpath";
 declare module "cron";
 
 declare module "chinese-lunar-calendar";
+
+declare module "electron-log";

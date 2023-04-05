@@ -29,6 +29,7 @@
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
     "devui-theme": "^0.0.4",
+    "electron-log": "^4.4.8",
     "jsonpath": "^1.1.1",
     "path": "^0.12.7",
     "vue": "^3.2.13",

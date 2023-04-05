@@ -5,6 +5,7 @@ import * as path from "path";
 import { PluginFile } from "@/assets/ts/plugin/model/PluginFile";
 import * as jsonpath from "jsonpath";
 import { PluginConfig } from "@/assets/ts/plugin/model/PluginConfig";
+import LOGGER from "@/log";
 
 const PLUGIN_DIR: string = "/plugins";
 const PLUGIN_FILTER: string = "^(?!.*sdk).*$";
@@ -29,10 +30,11 @@ export default class PluginManager {
   private async scanPlugins(): Promise<void> {
     const directories = await readDir(PLUGIN_DIR, PLUGIN_FILTER);
     for (const directory of directories) {
-      const currentPlugin = await this.checkAndGetPluginFile(path.join(PLUGIN_DIR, directory));
+      const currentPlugin = await this.checkAndGetPluginFile(directory);
       if (currentPlugin === null) {
         continue;
       }
+      LOGGER.warn(`Found plugin: ${directory}`);
       const plugin = require(/* webpackIgnore: true */ currentPlugin.entrance);
       const instance: PluginClient = plugin.default.getInstance();
       console.log(instance);
@@ -40,7 +42,8 @@ export default class PluginManager {
     }
   }
 
-  private async checkAndGetPluginFile(pluginDirPath: string): Promise<PluginFile | null> {
+  private async checkAndGetPluginFile(pluginDirName: string): Promise<PluginFile | null> {
+    const pluginDirPath = path.join(PLUGIN_DIR, pluginDirName);
     const fileNameList = await readDir(pluginDirPath);
     if (!fileNameList.includes("package.json")) {
       return null;
