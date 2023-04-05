@@ -12,6 +12,7 @@
     "clean": "rimraf lib",
     "lint": "vue-cli-service lint"
   },
+  "main": "lib/index.common.js",
   "dependencies": {
     "@todo-manager/plugin-sdk": "link:../../../sdk",
     "core-js": "^3.8.3",
