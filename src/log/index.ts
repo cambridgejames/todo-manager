@@ -11,6 +11,6 @@ LOGGER.transports.file.level = "warn";
 LOGGER.transports.file.file = path.join(logDir, "root.log");
 LOGGER.transports.file.maxSize = 50 * 1024 * 1024; // 50MB
 
-LOGGER.transports.console.level = "warn";
+LOGGER.transports.console.level = "info";
 
 export default LOGGER;

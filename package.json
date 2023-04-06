@@ -31,6 +31,7 @@
     "devui-theme": "^0.0.4",
     "electron-log": "^4.4.8",
     "jsonpath": "^1.1.1",
+    "lodash": "^4.17.21",
     "path": "^0.12.7",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",

@@ -43,6 +43,7 @@
   "license": "MIT",
   "typings": "lib/index.d.ts",
   "plugin": {
+    "name": "CalendarView",
     "activationEvents": [
       "*"
     ]

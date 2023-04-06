@@ -64,3 +64,17 @@ export const readDir = (pathToDir: string, filter = "(?:)"): Promise<Array<strin
     });
   });
 };
+
+/**
+ * 判断指定目录或文件是否存在
+ *
+ * @param pathToFile
+ */
+export const isExists = async (pathToFile: string | Array<string>): Promise<boolean> => {
+  const filePaths: Array<string> = typeof pathToFile === "string" ? [pathToFile] : pathToFile;
+  let solution = true;
+  for (const currentFilePath of filePaths) {
+    solution &&= fs.existsSync(getConfigPath(currentFilePath));
+  }
+  return solution;
+};
