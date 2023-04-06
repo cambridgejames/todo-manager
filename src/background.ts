@@ -31,7 +31,8 @@ async function createWindow() {
     icon: path.join(__dirname, "../public/icon/icon.ico"), // Windows图标
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
+      webSecurity: false
     }
   });
   if (process.platform === "darwin") {

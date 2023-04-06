@@ -1,0 +1,51 @@
+{
+  "name": "@todo-manager/calendar-vieww-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ElectronTodo日历视图插件",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "yarn clean && yarn build:lib && rimraf lib/demo.html",
+    "build:lib": "vue-cli-service build --target lib --name index --dest lib ./packages/index.ts",
+    "test:unit": "vue-cli-service test:unit",
+    "test:coverage": "vue-cli-service test:unit --coverage",
+    "clean": "rimraf lib",
+    "lint": "vue-cli-service lint"
+  },
+  "main": "lib/index.common.js",
+  "dependencies": {
+    "@todo-manager/plugin-sdk": "link:../../../sdk",
+    "core-js": "^3.8.3",
+    "vue": "^3.2.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-plugin-unit-jest": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "@vue/test-utils": "^2.0.0-0",
+    "@vue/vue3-jest": "^27.0.0-alpha.1",
+    "babel-jest": "^27.0.6",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.0.5",
+    "rimraf": "^4.4.1",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0",
+    "ts-jest": "^27.0.4",
+    "typescript": "~4.5.5"
+  },
+  "license": "MIT",
+  "typings": "lib/index.d.ts",
+  "plugin": {
+    "name": "CalendarView",
+    "activationEvents": [
+      "*"
+    ]
+  }
+}

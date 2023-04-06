@@ -10,7 +10,7 @@ const CONFIG_FILE_ENCODING = "utf-8";
  *
  * @param pathToFile 配置文件的URL（从assets目录开始）
  */
-const getConfigPath = (pathToFile: string): string => {
+export const getConfigPath = (pathToFile: string): string => {
   return IS_DEVELOPMENT ? path.join(".", RESOURCE_DIR_NAME, pathToFile) : path.join(".", pathToFile);
 };
 
@@ -63,4 +63,18 @@ export const readDir = (pathToDir: string, filter = "(?:)"): Promise<Array<strin
       resolve(data.filter(value => regex.test(value)));
     });
   });
+};
+
+/**
+ * 判断指定目录或文件是否存在
+ *
+ * @param pathToFile
+ */
+export const isExists = async (pathToFile: string | Array<string>): Promise<boolean> => {
+  const filePaths: Array<string> = typeof pathToFile === "string" ? [pathToFile] : pathToFile;
+  let solution = true;
+  for (const currentFilePath of filePaths) {
+    solution &&= fs.existsSync(getConfigPath(currentFilePath));
+  }
+  return solution;
 };
