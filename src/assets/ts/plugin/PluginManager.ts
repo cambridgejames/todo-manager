@@ -3,8 +3,6 @@ import PluginHolder from "@/assets/ts/plugin/PluginHolder";
 import { PluginConfig, PluginFile } from "@/assets/ts/plugin/model";
 import LOGGER from "@/log";
 
-import { PluginClient } from "@todo-manager/plugin-sdk/lib/client/PluginClient";
-
 import * as jsonpath from "jsonpath";
 import * as path from "path";
 import { isEmpty } from "lodash";
@@ -41,11 +39,12 @@ export default class PluginManager {
       if (currentPlugin === null) {
         continue;
       }
-      LOGGER.warn(`Found plugin: ${directory}`);
-      const plugin = require(/* webpackIgnore: true */ currentPlugin.entrance);
-      const instance: PluginClient = plugin.default.getInstance();
-      console.log(instance);
-      instance.onMount();
+      LOGGER.info(`Found plugin: ${currentPlugin.config.name}`);
+      this.pluginHolder.addPlugin(currentPlugin).then(() => {
+        LOGGER.warn(`Add plugin ${currentPlugin.config.name} to holder`);
+      }).catch(error => {
+        LOGGER.error(`Add plugin ${currentPlugin.config.name} to holder failed: ${error}`);
+      });
     }
   }
 
