@@ -15,11 +15,18 @@ module.exports = defineConfig({
     }
   },
   configureWebpack: {
+    target: "electron-renderer",
     resolve: {
       alias
     }
   },
   css: {
     extract: false
+  },
+  pluginOptions: {
+    electronBuilder: {
+      customFileProtocol: "./",
+      nodeIntegration: true
+    }
   }
 });

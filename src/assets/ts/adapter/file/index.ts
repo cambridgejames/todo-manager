@@ -74,7 +74,7 @@ export const isExists = async (pathToFile: string | Array<string>): Promise<bool
   const filePaths: Array<string> = typeof pathToFile === "string" ? [pathToFile] : pathToFile;
   let solution = true;
   for (const currentFilePath of filePaths) {
-    solution &&= fs.existsSync(getConfigPath(currentFilePath));
+    solution = solution && fs.existsSync(getConfigPath(currentFilePath));
   }
   return solution;
 };

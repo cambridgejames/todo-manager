@@ -17,7 +17,7 @@
 import { getCurrentInstance, onMounted, onUnmounted, ref } from "vue";
 import DateTableView from "@/components/ui/dateTableView";
 import { ipcRenderer, IpcRendererEvent } from "electron";
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { IpcMainChannel } from "@todo-manager/plugin-sdk/lib/common";
 import { formatTime } from "@/assets/ts/utils/TimeFormatUtil";
 import { getLunar } from "chinese-lunar-calendar";
 import { Lunar } from "@/components/ui/dateTableView/src/type";

@@ -32,7 +32,7 @@
 import { ipcRenderer, IpcRendererEvent } from "electron";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { IpcMainChannel } from "@todo-manager/plugin-sdk/lib/common";
 import {
   getActiveMonthDate,
   initTableContent, refreshToday,

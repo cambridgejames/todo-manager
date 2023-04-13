@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
+import { IpcMainChannel } from "@todo-manager/plugin-sdk/lib/common";
 
 export const onFullScreen = (mainWindow: BrowserWindow, eventName: string) => {
   console.log(eventName);

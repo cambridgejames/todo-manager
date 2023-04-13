@@ -3,7 +3,7 @@ import { readDir, readFile } from "@/assets/ts/adapter/file";
 import * as path from "path";
 import { AllThemeData, ThemeData } from "@/assets/ts/interface/theme/ThemeData";
 import { ipcRenderer } from "electron";
-import { IpcRenderChannel } from "@/assets/ts/interface/ipc/IpcRenderChannel";
+import { IpcRenderChannel } from "@todo-manager/plugin-sdk/lib/common";
 
 const THEME_DIR: string = "/theme";
 const THEME_FILE_NAME_SUFFIX: string = "json";

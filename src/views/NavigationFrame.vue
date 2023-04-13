@@ -19,8 +19,8 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import { ipcRenderer } from "electron";
+import { IpcMainChannel } from "@todo-manager/plugin-sdk/lib/common";
 
-import { IpcMainChannel } from "@/assets/ts/interface/ipc/IpcMainChannel";
 import { topBtnList, bottomBtnList } from "@/assets/ts/config/Navigate";
 import NavigateTab from "@/components/ui/navigationTab/NavigateTab.vue";
 import TitleMenuContent from "@/components/system/TitleMenuContent.vue";

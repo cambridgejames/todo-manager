@@ -1,7 +1,9 @@
 import { PluginClient, PluginExport } from "@todo-manager/plugin-sdk/lib/client";
+import { LOGGER } from "@todo-manager/plugin-sdk/lib/server/api/log";
 
 class CalendarViewPlugin implements PluginClient {
   onMount(): void {
+    LOGGER.warn("");
     console.log("onMount");
   }
 
