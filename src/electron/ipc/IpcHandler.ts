@@ -2,14 +2,12 @@ import { BrowserWindow, ipcMain } from "electron";
 import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 
 import { Theme } from "devui-theme";
-import { IpcRenderChannel } from "@todo-manager/plugin-sdk/lib/common";
+import { getPluginChanel, IpcRenderChannel } from "@todo-manager/plugin-sdk/lib/common";
 
 // eslint-disable-next-line
 type IpcHandleFunc = (event: IpcMainInvokeEvent, ...args: any[]) => (Promise<void>) | (any);
 
-const IPC_HANDLER_MAP = new Map<IpcRenderChannel, IpcHandleFunc>();
-
-IPC_HANDLER_MAP.set(IpcRenderChannel.CHANGE_THEME, (event, targetTheme: Theme) => {
+const changeThemeHandler: IpcHandleFunc = (event: IpcMainInvokeEvent, targetTheme: Theme) => {
   const themeData = targetTheme.data;
   const mainWindows: Array<BrowserWindow> = BrowserWindow.getAllWindows();
   for (const currentWindow of mainWindows) {
@@ -21,8 +19,13 @@ IPC_HANDLER_MAP.set(IpcRenderChannel.CHANGE_THEME, (event, targetTheme: Theme) =
       });
     }
   }
-});
+};
 
-export const handleIpc = () => IPC_HANDLER_MAP.forEach((handler: IpcHandleFunc, channel: string) => {
-  ipcMain.handle(channel, handler);
-});
+const pluginChannelRetransmissionHandler: IpcHandleFunc = (event: IpcMainInvokeEvent, ...args: any[]) => {
+  console.log(args);
+};
+
+export const handleIpc = () => {
+  ipcMain.handle(IpcRenderChannel.CHANGE_THEME, changeThemeHandler);
+  ipcMain.handle(getPluginChanel("*"), pluginChannelRetransmissionHandler);
+};

@@ -3,21 +3,30 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
-    "serve": "tsc -w",
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && webpack --config webpack.config.js",
     "clean": "rimraf lib"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
   "dependencies": {
+    "electron": "^24.1.2",
+    "glob": "^10.2.1"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3",
-    "electron": "^23.1.0",
-    "rimraf": "^4.4.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.2"
+    "@types/node": "^18.15.13",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^29.5.0",
+    "babel-loader": "^9.1.2",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "eslint": "^8.39.0",
+    "jest": "^29.5.0",
+    "rimraf": "^5.0.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.80.0",
+    "webpack-cli": "^5.0.2"
   }
 }

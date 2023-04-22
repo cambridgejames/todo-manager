@@ -1,4 +1,5 @@
 import { ipcRenderer } from "electron";
+import { getPluginChanel } from "@/common";
 
 class Logger {
   private static _logger: Logger;
@@ -17,7 +18,7 @@ class Logger {
 
   private async logWarn(...args: any): Promise<void> {
     console.log(args);
-    await ipcRenderer.invoke("changeTheme", {
+    await ipcRenderer.invoke(getPluginChanel("logger"), {
       data: {
         "devui-global-bg-normal": "#ffffff",
         "devui-global-bg": "#f7f8fa",
